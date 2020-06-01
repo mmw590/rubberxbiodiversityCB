@@ -22,3 +22,10 @@ Citation:
 
 *Yay for transparency and reproducibility!*
 
+
+## Figure
+A high-resolution version of Figure 2: 
+![](figure/figure2.png)
+
+**Figure 2.** Spatial overlay of rubber bioclimatic suitability with extinction vulnerability. Map of rubber bioclimatic suitability and extinction vulnerability along two colour scales, divided into four classes for rubber suitability and five classes for extinction vulnerability for plotting. The main plots show extinction vulnerability scores aggregated for threatened amphibians, birds, mammals and reptiles in Africa (A) and Asia and New Guinea (B). The subplots show extinction vulnerability scores for each taxonomic class separately. Protected areas are shaded in dark grey in the main plots. 
+
