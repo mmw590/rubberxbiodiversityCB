@@ -4,7 +4,7 @@ This repository contains the R code used to perform the analysis in the followin
 Wang M. M. H., L. R. Carrasco, D. P. Edwards. 2020. Reconciling rubber expansion with biodiversity conservation. *In submission.*
 
 
-## Instructions
+## About
 
 A static version of the code and input data can be accessed at \[DOI: [10.5281/zenodo.1200255](https://doi.org/10.5281/zenodo.1200255)\]. The development version of this repository is available on GitHub at https://github.com/giovannistrona/oil-palm-primates.
 
