@@ -8,8 +8,6 @@ Wang M. M. H., L. R. Carrasco, D. P. Edwards. 2020. Reconciling rubber expansion
 
 A static version of the code and input data can be accessed at [link](https://doi.org/10.5281/zenodo.1200255). The development version of this repository is available at [github.com/mmw590/rubberxbiodiversityCB](https://github.com/mmw590/rubberxbiodiversityCB).  
 
-Please refer to [Key Resources Table][tbl] (also in Methods of the article) for where to download non-redistributable data.  
-
 I wrote the scripts to be run in the specified order, but feel free to use what you need. I have tried to make the filenames informative of their content.  
 
 The scenario simulations (Scripts `12.0-country_scenarios_fxn.R` through `13.9-scenarios_hpc_vulnA_scen3c.R`) were run on the HPC at the University of Sneffied (ShARC). I have included an example of the accompanying bash script `hpc_bash_example_1000reps.sh` that was used to submit the R scripts as jobs to the HPC. Please modify as required for your systems. It is possible to run the code on your local computer given sufficient RAM, but an alternative would be to run a single rep of the simulations, which will enable you to get output which should be close enough to the output averaged over 1000 reps. I have included examples of how to do this in the script `11-scenarios_prep_country.R`  
