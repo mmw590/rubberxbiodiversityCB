@@ -33,7 +33,7 @@ A high-resolution version of Figure 2:
 
 
 ## Key Resources Table (where to download data)
-[Key Resources Table (in pdf)](output/KEY-RESOURCES-TABLE.pdf)  
+[Key Resources Table (in pdf)](KEY-RESOURCES-TABLE.pdf)  
 Apologies that I didn't have time to figure out redistribution rights so I am not currently able to provide all the input data I used directly...but here's where you can get the data...  
   
 
