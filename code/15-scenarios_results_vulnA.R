@@ -1,3 +1,6 @@
+#### rubberxbiodiversityCB 
+#### 15-scenarios_results_vulnA.R #### 
+
 library(dplyr)
 library(tidyr)
 library(cowplot)
@@ -14,7 +17,7 @@ stderr <- function(x, na.rm=FALSE) {
 # 1.1 Country-Restricted Output ####
 scen_dflist <- list.files('output/country_scenario/', full.names=TRUE)
 scen_dflist <- grep("countrysim_scen_df", scen_dflist, value=TRUE)
-scen_dflist <- grep("test", scen_dflist, value=TRUE, invert=TRUE)
+#scen_dflist <- grep("test", scen_dflist, value=TRUE, invert=TRUE)
 scen_dflist
 scen_dflist <- lapply(scen_dflist[c(5,1:4)], fread)
 
@@ -103,7 +106,7 @@ str(check)
 
 
 
-##### Figure 3 A-C (Country) ####
+##### Fig3 A-C (Country) ####
 theme_set(theme_cowplot(font_size=8))
 scen_df_plotC <- scen_df_longC  
 
@@ -154,7 +157,7 @@ scenfigC_affspp <- ggplot(data=scen_df_plotC, aes(x=lost_area, y=nspplostrange0.
 #max(scen_df_plotC$nspplostrange0.10)
 
 
-#### Figs D-F (Unrestricted) ####
+#### Fig3 D-F (Unrestricted) ####
 scen_df_plot <- scen_df_long  
 
 # Avg suitability 

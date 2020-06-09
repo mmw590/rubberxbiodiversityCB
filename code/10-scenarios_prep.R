@@ -1,4 +1,5 @@
-###### 21.6-scenarios-prep.R #####
+#### rubberxbiodiversityCB 
+#### 10-scenarios_prep.R ####
 
 rm(list=ls())
 GISfolder <- 'C:/Users/bop17mw/Desktop/GIS_Files/'
@@ -12,7 +13,7 @@ library(data.table)
 
 
 ###### Load DF, suit_vuln_vals3, made in 21.3-numbersforcell.R 
-suit_vuln_vals3 <- fread('output/suit_vuln_vals3_may2020.csv')
+suit_vuln_vals3 <- fread('output/suit_vuln_vals3.csv')
 
 
 ##### Assign Levels of compromise ####
@@ -141,7 +142,7 @@ mat_vuln_ssea <- raster('output/ssea/biodiversity_rasters/rescaled_twice_ssea_co
 
 #### FOREST DEPENDENT SPECIES WHOSE RANGES ARE ENITRELY WITHIN STUDY REGION ####
 ## Forest dependent spp list... 
-forspp_corr <- read.csv("data/forestdependentspecies_iucnredlist2019.csv")
+forspp_corr <- read.csv("data/forestdependentspecies_iucnredlist2019.csv") # Derived from Table S3 from Tracewski et al. (2016). Toward quantification of the impact of 21st-century deforestation on the extinction risk of terrestrial vertebrates. Conserv. Biol. 30, 1070–1079.
 
 forspp_corr %>% group_by(class) %>% summarize(n_spp = n_distinct(SCINAME)) #amph 3526; bird 6265; mammal 1357
 
@@ -771,11 +772,11 @@ suit_vuln_spp
 fwrite(suit_vuln_spp, 'output/suit_vuln_scenario_combspp.csv') 
 
 
-# Make small vers of dataset for testing 
-suit_vuln_spp <- fread('output/suit_vuln_scenario_combspp.csv') 
-suit_vuln_spp_test <- suit_vuln_spp[, 1:100]
-
-fwrite(suit_vuln_spp_test, 'output/suit_vuln_scenario_combspp_100.csv') 
+# # Make small vers of dataset for testing 
+# suit_vuln_spp <- fread('output/suit_vuln_scenario_combspp.csv') 
+# suit_vuln_spp_test <- suit_vuln_spp[, 1:100]
+# 
+# fwrite(suit_vuln_spp_test, 'output/suit_vuln_scenario_combspp_100.csv') 
 
 
 
@@ -795,6 +796,8 @@ irsg2027_high <- (16.79-13.22)/0.915   # 3.90 Mha
 # This is the amount needed from 2017 baseline:
 
 fao <- read.csv('data/FAOSTAT_yield_NR_World_2020-04-21.csv') #### FAO Rubber Harvested Area by Year 
+#   “FAO. FAOSTAT. License: CC BY-NC-SA 3.0 IGO. Extracted from: http://www.fao.org/faostat/en/#data/QC. Data of Access: 21-04-2020.”
+
 rubberArea_milha_2010 <- fao %>% dplyr::filter(Element == 'Area harvested', Year == 2010, Area=="World") %>% mutate(Value=Value/1000000) %>% dplyr::select(Value) 
 rubberArea_milha_2017 <- fao %>% dplyr::filter(Element == 'Area harvested', Year == 2017, Area=="World") %>% mutate(Value=Value/1000000) %>% dplyr::select(Value) 
 
