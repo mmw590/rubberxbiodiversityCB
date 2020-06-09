@@ -2,5 +2,14 @@
 .Rhistory
 .RData
 .Ruserdata
-output/
 data/excld/
+output/afr/
+output/ssea/
+output/dfs_for_figs/
+output/temp/
+output/results/results_afr/
+output/results/results_ssea/
+output/suit_vuln_vals3.csv
+output/suit_vuln_vals3_ext.csv
+output/suit_vuln_vals3_scenario.csv
+output/suit_vuln_scenario_combspp.csv
