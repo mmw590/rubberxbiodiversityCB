@@ -1,0 +1,302 @@
+"SCINAME","probability_of_threat.x","pred_threat_bin.x","probability_of_threat.y","pred_threat_bin.y","pred_threat","iucn_sc_pred"
+"Aethomys silindensis",0.424,"Threatened",0.33,"Threatened","Threatened",16
+"Aethomys stannarius",0.336,"Threatened",0.141,"Non threatened","Non threatened",3
+"Ammodillus imbellis",0.122,"Non threatened",0.099,"Non threatened","Non threatened",3
+"Anomalurus pelii",0.132,"Non threatened",0.176,"Non threatened","Non threatened",3
+"Calcochloris tytonis",0.882,"Threatened",0.867,"Threatened","Threatened",16
+"Cercocebus chrysogaster",0.594,"Threatened",NA,NA,"Threatened",16
+"Chaerephon gallagheri",NA,NA,0.763,"Threatened","Threatened",16
+"Chaerephon russatus",NA,NA,0.079,"Non threatened","Non threatened",3
+"Cheirogaleus major",0.846,"Threatened",NA,NA,"Threatened",16
+"Chrysochloris visagiei",0.716,"Threatened",0.47,"Threatened","Threatened",16
+"Congosorex polli",0.896,"Threatened",0.883,"Threatened","Threatened",16
+"Crocidura bottegi",NA,NA,0.179,"Non threatened","Non threatened",3
+"Crocidura erica",NA,NA,0.257,"Non threatened","Non threatened",3
+"Crocidura fischeri",0.828,"Threatened",0.618,"Threatened","Threatened",16
+"Crocidura gracilipes",NA,NA,0.704,"Threatened","Threatened",16
+"Crocidura longipes",0.812,"Threatened",0.827,"Threatened","Threatened",16
+"Crocidura macowi",NA,NA,0.729,"Threatened","Threatened",16
+"Crocidura mutesae",NA,NA,0.35,"Threatened","Threatened",16
+"Crocidura pitmani",NA,NA,0.358,"Threatened","Threatened",16
+"Crocidura planiceps",NA,NA,0.045,"Non threatened","Non threatened",3
+"Crocidura polia",NA,NA,0.833,"Threatened","Threatened",16
+"Crocidura raineyi",0.8,"Threatened",0.858,"Threatened","Threatened",16
+"Crocidura selina",0.322,"Threatened",0.378,"Threatened","Threatened",16
+"Crocidura ultima",0.848,"Threatened",0.69,"Threatened","Threatened",16
+"Crocidura zaphiri",0.788,"Threatened",0.397,"Threatened","Threatened",16
+"Crocidura zimmeri",0.81,"Threatened",0.788,"Threatened","Threatened",16
+"Dasymys foxi",0.536,"Threatened",0.424,"Threatened","Threatened",16
+"Dasymys nudipes",0.048,"Non threatened",0.108,"Non threatened","Non threatened",3
+"Dendromus vernayi",0.844,"Threatened",0.558,"Threatened","Threatened",16
+"Dendroprionomys rousseloti",NA,NA,0.635,"Threatened","Threatened",16
+"Dologale dybowskii",0.036,"Non threatened",0.046,"Non threatened","Non threatened",3
+"Elephantulus fuscipes",0.18,"Non threatened",0,"Non threatened","Non threatened",3
+"Elephantulus fuscus",0.178,"Non threatened",0,"Non threatened","Non threatened",3
+"Elephantulus revoilii",0.228,"Non threatened",0,"Non threatened","Non threatened",3
+"Eliurus antsingy",0.87,"Threatened",NA,NA,"Threatened",16
+"Epomophorus grandis",0.784,"Threatened",0.631,"Threatened","Threatened",16
+"Eptesicus platyops",NA,NA,0.567,"Threatened","Threatened",16
+"Fukomys foxi",0.712,"Threatened",0.341,"Threatened","Threatened",16
+"Funisciurus bayonii",0.094,"Non threatened",0.065,"Non threatened","Non threatened",3
+"Funisciurus substriatus",0.058,"Non threatened",0.1,"Non threatened","Non threatened",3
+"Genetta poensis",0.12,"Non threatened",NA,NA,"Non threatened",3
+"Gerbillus acticola",0.322,"Threatened",0.265,"Threatened","Threatened",16
+"Gerbillus bottai",NA,NA,0.234,"Threatened","Threatened",16
+"Gerbillus brockmani",0.812,"Threatened",0.67,"Threatened","Threatened",16
+"Gerbillus cosensis",NA,NA,0.099,"Non threatened","Non threatened",3
+"Gerbillus lowei",NA,NA,0.361,"Threatened","Threatened",16
+"Gerbillus muriculus",0.578,"Threatened",0.56,"Threatened","Threatened",16
+"Gerbillus nancillus",0.052,"Non threatened",0.016,"Non threatened","Non threatened",3
+"Gerbillus percivali",NA,NA,0.535,"Threatened","Threatened",16
+"Gerbillus principulus",0.566,"Threatened",0.43,"Threatened","Threatened",16
+"Gerbillus somalicus",NA,NA,0.151,"Non threatened","Non threatened",3
+"Gerbillus stigmonyx",NA,NA,0.219,"Threatened","Threatened",16
+"Glauconycteris curryae",0.056,"Non threatened",NA,NA,"Non threatened",3
+"Glauconycteris egeria",0.046,"Non threatened",0.064,"Non threatened","Non threatened",3
+"Glauconycteris gleni",0.788,"Threatened",0.576,"Threatened","Threatened",16
+"Glauconycteris humeralis",0.098,"Non threatened",NA,NA,"Non threatened",3
+"Glauconycteris kenyacola",0.724,"Threatened",0.608,"Threatened","Threatened",16
+"Glauconycteris machadoi",0.79,"Threatened",NA,NA,"Threatened",16
+"Grammomys aridulus",0.35,"Threatened",0.313,"Threatened","Threatened",16
+"Grammomys buntingi",0.092,"Non threatened",0.125,"Non threatened","Non threatened",3
+"Grammomys caniceps",0.162,"Non threatened",0.249,"Threatened","Threatened",16
+"Graphiurus angolensis",0.1,"Non threatened",NA,NA,"Non threatened",3
+"Graphiurus crassicaudatus",0.082,"Non threatened",0.055,"Non threatened","Non threatened",3
+"Graphiurus johnstoni",0.63,"Threatened",NA,NA,"Threatened",16
+"Graphiurus monardi",0.25,"Non threatened",0.269,"Threatened","Threatened",16
+"Graphiurus surdus",0.378,"Threatened",0.149,"Non threatened","Non threatened",3
+"Heliosciurus punctatus",0.064,"Non threatened",0.078,"Non threatened","Non threatened",3
+"Heliosciurus undulatus",0.032,"Non threatened",0.179,"Non threatened","Non threatened",3
+"Hipposideros camerunensis",0.718,"Threatened",0.355,"Threatened","Threatened",16
+"Huetia leucorhina",0.088,"Non threatened",0.003,"Non threatened","Non threatened",3
+"Kerivoula cuprosa",0.092,"Non threatened",0.066,"Non threatened","Non threatened",3
+"Kerivoula eriophora",NA,NA,0.633,"Threatened","Threatened",16
+"Laephotis angolensis",0.262,"Non threatened",0.168,"Threatened","Threatened",16
+"Leimacomys buettneri",0.85,"Threatened",0.577,"Threatened","Threatened",16
+"Lemniscomys hoogstraali",0.756,"Threatened",0.591,"Threatened","Threatened",16
+"Lemniscomys roseveari",0.776,"Threatened",0.602,"Threatened","Threatened",16
+"Lophuromys cinereus",NA,NA,0.622,"Threatened","Threatened",16
+"Madoqua piacentinii",0.508,"Threatened",0.678,"Threatened","Threatened",16
+"Mastomys pernanus",0.052,"Non threatened",0.117,"Non threatened","Non threatened",3
+"Micropteropus intermedius",0.202,"Non threatened",0.192,"Threatened","Threatened",16
+"Miniopterus minor",NA,NA,0.256,"Threatened","Threatened",16
+"Mops niangarae",NA,NA,0.06,"Non threatened","Non threatened",3
+"Mops trevori",NA,NA,0.073,"Non threatened","Non threatened",3
+"Mus goundae",0.68,"Threatened",0.512,"Threatened","Threatened",16
+"Mus neavei",0.584,"Threatened",0.306,"Threatened","Threatened",16
+"Mus oubanguii",0.104,"Non threatened",0.136,"Non threatened","Non threatened",3
+"Myopterus daubentonii",0.108,"Non threatened",0.044,"Non threatened","Non threatened",3
+"Myosorex schalleri",NA,NA,0.875,"Threatened","Threatened",16
+"Myosorex tenuis",NA,NA,0.673,"Threatened","Threatened",16
+"Myotis morrisi",0.786,"Threatened",0.632,"Threatened","Threatened",16
+"Neoromicia flavescens",NA,NA,0.37,"Threatened","Threatened",16
+"Neoromicia melckorum",NA,NA,0.073,"Non threatened","Non threatened",3
+"Nycteris major",0.022,"Non threatened",0.048,"Non threatened","Non threatened",3
+"Nycteris parisii",0.286,"Threatened",NA,NA,"Threatened",16
+"Nycteris vinsoni",0.864,"Threatened",NA,NA,"Threatened",16
+"Oryzorictes tetradactylus",0.43,"Threatened",0.546,"Threatened","Threatened",16
+"Paracrocidura graueri",0.928,"Threatened",0.693,"Threatened","Threatened",16
+"Paraxerus cooperi",0.734,"Threatened",0.397,"Threatened","Threatened",16
+"Paraxerus lucifer",0.68,"Threatened",0.455,"Threatened","Threatened",16
+"Pelomys hopkinsi",0.672,"Threatened",0.299,"Threatened","Threatened",16
+"Pipistrellus aero",0.774,"Threatened",0.47,"Threatened","Threatened",16
+"Pipistrellus arabicus",NA,NA,0.511,"Threatened","Threatened",16
+"Pipistrellus ariel",NA,NA,0.107,"Non threatened","Non threatened",3
+"Pipistrellus eisentrauti",NA,NA,0.587,"Threatened","Threatened",16
+"Pipistrellus inexspectatus",0.132,"Non threatened",0.101,"Non threatened","Non threatened",3
+"Pipistrellus musciculus",NA,NA,0.06,"Non threatened","Non threatened",3
+"Plecotus balensis",0.802,"Threatened",NA,NA,"Threatened",16
+"Plerotes anchietae",0.118,"Non threatened",0.1,"Non threatened","Non threatened",3
+"Praomys verschureni",0.076,"Non threatened",0.066,"Non threatened","Non threatened",3
+"Prionomys batesi",0.134,"Non threatened",0.084,"Non threatened","Non threatened",3
+"Rhinolophus adami",0.888,"Threatened",0.846,"Threatened","Threatened",16
+"Rhinolophus maendeleo",0.852,"Threatened",NA,NA,"Threatened",16
+"Rhinolophus sakejiensis",0.84,"Threatened",NA,NA,"Threatened",16
+"Rhinolophus silvestris",0.194,"Non threatened",0.108,"Non threatened","Non threatened",3
+"Scotoecus albofuscus",0.008,"Non threatened",0.012,"Non threatened","Non threatened",3
+"Scotophilus borbonicus",NA,NA,0.802,"Threatened","Threatened",16
+"Scotophilus nucella",0.51,"Threatened",NA,NA,"Threatened",16
+"Steatomys jacksoni",0.806,"Threatened",0.513,"Threatened","Threatened",16
+"Stenocephalemys ruppi",0.764,"Threatened",0.488,"Threatened","Threatened",16
+"Sylvisorex konganensis",0.514,"Threatened",NA,NA,"Threatened",16
+"Sylvisorex oriundus",0.176,"Non threatened",0.385,"Threatened","Threatened",16
+"Sylvisorex pluvialis",0.772,"Threatened",NA,NA,"Threatened",16
+"Tadarida ventralis",0.056,"Non threatened",0.021,"Non threatened","Non threatened",3
+"Taphozous hamiltoni",0.398,"Threatened",0.297,"Threatened","Threatened",16
+"Thallomys shortridgei",NA,NA,0.284,"Threatened","Threatened",16
+"Abditomys latidens",0.644,"Threatened",0.524,"Threatened","Threatened",16
+"Aeromys tephromelas",0.248,"Non threatened",0.159,"Non threatened","Non threatened",3
+"Alticola albicaudus",0.126,"Non threatened",0.139,"Non threatened","Non threatened",3
+"Anonymomys mindorensis",0.656,"Threatened",0.631,"Threatened","Threatened",16
+"Anourosorex schmidi",0.508,"Threatened",NA,NA,"Threatened",16
+"Anthops ornatus",0.254,"Non threatened",0.373,"Threatened","Threatened",16
+"Apomys littoralis",0.356,"Threatened",0.31,"Threatened","Threatened",16
+"Baiyankamys habbema",NA,NA,0.695,"Threatened","Threatened",16
+"Batomys dentatus",0.918,"Threatened",0.803,"Threatened","Threatened",16
+"Belomys pearsonii",0.13,"Non threatened",0.076,"Non threatened","Non threatened",3
+"Berylmys mackenziei",0.108,"Non threatened",0.196,"Non threatened","Non threatened",3
+"Berylmys manipulus",0.072,"Non threatened",0.117,"Non threatened","Non threatened",3
+"Brassomys albidens",NA,NA,0.662,"Threatened","Threatened",16
+"Callosciurus albescens",0.324,"Threatened",0.306,"Threatened","Threatened",16
+"Cardiocranius paradoxus",0.166,"Non threatened",0.016,"Non threatened","Non threatened",3
+"Carpomys melanurus",0.604,"Threatened",0.718,"Threatened","Threatened",16
+"Chaetocauda sichuanensis",0.724,"Threatened",0.471,"Threatened","Threatened",16
+"Chiropodomys calamianensis",0.378,"Threatened",0.561,"Threatened","Threatened",16
+"Chiropodomys muroides",0.188,"Non threatened",0.103,"Non threatened","Non threatened",3
+"Chiropodomys pusillus",0.188,"Non threatened",0.071,"Non threatened","Non threatened",3
+"Chodsigoa caovansunga",0.782,"Threatened",NA,NA,"Threatened",16
+"Chodsigoa salenskii",NA,NA,0.369,"Threatened","Threatened",16
+"Chodsigoa sodalis",0.33,"Threatened",NA,NA,"Threatened",16
+"Crateromys paulus",NA,NA,0.975,"Threatened","Threatened",16
+"Crocidura grandis",0.836,"Threatened",0.799,"Threatened","Threatened",16
+"Crocidura hilliana",0.65,"Threatened",NA,NA,"Threatened",16
+"Crocidura horsfieldii",0.19,"Non threatened",0.292,"Non threatened","Non threatened",3
+"Crocidura mindorus",0.71,"Threatened",0.769,"Threatened","Threatened",16
+"Crocidura pullata",NA,NA,0.291,"Non threatened","Non threatened",3
+"Crocidura tenuis",0.3,"Threatened",0.38,"Threatened","Threatened",16
+"Crocidura vosmaeri",0.676,"Threatened",NA,NA,"Threatened",16
+"Crocidura wuchihensis",0.606,"Threatened",NA,NA,"Threatened",16
+"Crunomys celebensis",0.774,"Threatened",0.429,"Threatened","Threatened",16
+"Crunomys fallax",0.576,"Threatened",0.337,"Threatened","Threatened",16
+"Crunomys suncoides",0.808,"Threatened",NA,NA,"Threatened",16
+"Dacnomys millardi",0.066,"Non threatened",0.209,"Threatened","Threatened",16
+"Dendrogale melanura",0.244,"Non threatened",0.055,"Non threatened","Non threatened",3
+"Echymipera echinista",0.65,"Threatened",0.876,"Threatened","Threatened",16
+"Ellobius alaicus",0.664,"Threatened",0.463,"Threatened","Threatened",16
+"Eonycteris major",0.112,"Non threatened",0.053,"Non threatened","Non threatened",3
+"Eptesicus dimissus",NA,NA,0.502,"Threatened","Threatened",16
+"Eptesicus tatei",0.642,"Threatened",0.786,"Threatened","Threatened",16
+"Euroscaptor parvidens",0.764,"Threatened",0.399,"Threatened","Threatened",16
+"Exilisciurus exilis",0.336,"Threatened",0.029,"Non threatened","Non threatened",3
+"Falsistrellus mordax",NA,NA,0.147,"Threatened","Threatened",16
+"Falsistrellus petersi",0.382,"Threatened",0.18,"Threatened","Threatened",16
+"Glischropus javanus",0.846,"Threatened",0.691,"Threatened","Threatened",16
+"Glyphotes simus",0.622,"Threatened",0.224,"Threatened","Threatened",16
+"Haeromys margarettae",0.884,"Threatened",0.507,"Threatened","Threatened",16
+"Harpiola grisea",NA,NA,0.673,"Threatened","Threatened",16
+"Hesperoptenus doriae",0.712,"Threatened",0.398,"Threatened","Threatened",16
+"Hipposideros breviceps",0.842,"Threatened",0.769,"Threatened","Threatened",16
+"Hipposideros coronatus",0.86,"Threatened",0.621,"Threatened","Threatened",16
+"Hipposideros crumeniferus",0.842,"Threatened",0.384,"Threatened","Threatened",16
+"Hipposideros dinops",0.232,"Non threatened",0.479,"Threatened","Threatened",16
+"Hipposideros inexpectatus",0.794,"Threatened",0.775,"Threatened","Threatened",16
+"Hipposideros macrobullatus",0.726,"Threatened",0.352,"Threatened","Threatened",16
+"Hipposideros nequam",NA,NA,0.876,"Threatened","Threatened",16
+"Hydromys hussoni",NA,NA,0.807,"Threatened","Threatened",16
+"Hydromys neobritannicus",NA,NA,0.416,"Threatened","Threatened",16
+"Hylomys megalotis",0.586,"Threatened",NA,NA,"Threatened",16
+"Hylopetes bartelsi",NA,NA,0.663,"Threatened","Threatened",16
+"Hylopetes platyurus",0.124,"Non threatened",NA,NA,"Non threatened",3
+"Hylopetes winstoni",0.828,"Threatened",0.687,"Threatened","Threatened",16
+"Hyomys dammermani",0.07,"Non threatened",0.201,"Non threatened","Non threatened",3
+"Hypsugo joffrei",NA,NA,0.392,"Threatened","Threatened",16
+"Hypsugo kitcheneri",NA,NA,0.197,"Threatened","Threatened",16
+"Hypsugo macrotis",NA,NA,0.18,"Threatened","Threatened",16
+"Kerivoula agnella",0.83,"Threatened",0.703,"Threatened","Threatened",16
+"Kerivoula myrella",0.32,"Threatened",0.265,"Threatened","Threatened",16
+"Lariscus niobe",0.22,"Non threatened",0.126,"Non threatened","Non threatened",3
+"Macruromys elegans",0.728,"Threatened",0.734,"Threatened","Threatened",16
+"Margaretamys parvus",0.682,"Threatened",0.347,"Threatened","Threatened",16
+"Maxomys baeodon",0.45,"Threatened",0.19,"Non threatened","Non threatened",3
+"Maxomys dollmani",0.794,"Threatened",0.602,"Threatened","Threatened",16
+"Maxomys hylomyoides",0.814,"Threatened",0.525,"Threatened","Threatened",16
+"Maxomys ochraceiventer",0.092,"Non threatened",0.1,"Non threatened","Non threatened",3
+"Melasmothrix naso",0.702,"Threatened",0.325,"Threatened","Threatened",16
+"Melomys bougainville",0.632,"Threatened",0.501,"Threatened","Threatened",16
+"Melomys cooperae",0.674,"Threatened",NA,NA,"Threatened",16
+"Melomys howi",0.882,"Threatened",NA,NA,"Threatened",16
+"Melomys paveli",0.722,"Threatened",NA,NA,"Threatened",16
+"Microhydromys richardsoni",0.01,"Non threatened",0.073,"Non threatened","Non threatened",3
+"Miniopterus macrocneme",0.072,"Non threatened",NA,NA,"Non threatened",3
+"Mops sarasinorum",NA,NA,0.133,"Non threatened","Non threatened",3
+"Mormopterus doriae",NA,NA,0.533,"Threatened","Threatened",16
+"Muntiacus feae",0.714,"Threatened",0.671,"Threatened","Threatened",16
+"Muntiacus gongshanensis",0.52,"Threatened",0.492,"Threatened","Threatened",16
+"Muntiacus puhoatensis",0.874,"Threatened",NA,NA,"Threatened",16
+"Muntiacus putaoensis",0.496,"Threatened",NA,NA,"Threatened",16
+"Muntiacus rooseveltorum",0.476,"Threatened",NA,NA,"Threatened",16
+"Muntiacus truongsonensis",0.166,"Non threatened",NA,NA,"Non threatened",3
+"Mus crociduroides",0.594,"Threatened",0.464,"Threatened","Threatened",16
+"Myotis annamiticus",0.708,"Threatened",NA,NA,"Threatened",16
+"Myotis australis",NA,NA,0.046,"Non threatened","Non threatened",3
+"Myotis bucharensis",0.216,"Non threatened",NA,NA,"Non threatened",3
+"Myotis csorbai",0.324,"Threatened",NA,NA,"Threatened",16
+"Myotis frater",0.058,"Non threatened",0.055,"Non threatened","Non threatened",3
+"Myotis hermani",0.652,"Threatened",NA,NA,"Threatened",16
+"Myotis longipes",0.238,"Non threatened",0.224,"Threatened","Threatened",16
+"Myotis oreias",NA,NA,0.821,"Threatened","Threatened",16
+"Myotis stalkeri",0.538,"Threatened",0.675,"Threatened","Threatened",16
+"Neodon forresti",0.488,"Threatened",NA,NA,"Threatened",16
+"Nyctimene cyclotis",0.686,"Threatened",0.441,"Threatened","Threatened",16
+"Nyctimene draconilla",0.444,"Threatened",0.196,"Threatened","Threatened",16
+"Nyctimene masalai",NA,NA,0.635,"Threatened","Threatened",16
+"Nyctophilus heran",0.822,"Threatened",0.755,"Threatened","Threatened",16
+"Nyctophilus microdon",0.748,"Threatened",0.474,"Threatened","Threatened",16
+"Nyctophilus shirleyae",0.024,"Non threatened",0.024,"Non threatened","Non threatened",3
+"Otomops formosus",0.626,"Threatened",0.488,"Threatened","Threatened",16
+"Otomops johnstonei",0.842,"Threatened",NA,NA,"Threatened",16
+"Otomops papuensis",0.706,"Threatened",0.648,"Threatened","Threatened",16
+"Otomops wroughtoni",0.708,"Threatened",0.464,"Threatened","Threatened",16
+"Paraleptomys wilhelmina",0.498,"Threatened",0.342,"Threatened","Threatened",16
+"Paramelomys steini",0.654,"Threatened",NA,NA,"Threatened",16
+"Petaurillus emiliae",0.69,"Threatened",0.564,"Threatened","Threatened",16
+"Petaurillus hosei",0.44,"Threatened",0.194,"Non threatened","Non threatened",3
+"Petaurillus kinlochii",0.602,"Threatened",0.454,"Threatened","Threatened",16
+"Petinomys hageni",0.818,"Threatened",0.791,"Threatened","Threatened",16
+"Pithecheir parvus",0.362,"Threatened",0.214,"Threatened","Threatened",16
+"Pithecheirops otion",0.714,"Threatened",NA,NA,"Threatened",16
+"Pogonomys championi",0.692,"Threatened",0.6,"Threatened","Threatened",16
+"Prosciurillus abstrusus",0.72,"Threatened",0.613,"Threatened","Threatened",16
+"Prosciurillus leucomus",0.37,"Threatened",0.13,"Non threatened","Non threatened",3
+"Pseudohydromys musseri",0.724,"Threatened",0.667,"Threatened","Threatened",16
+"Pseudohydromys occidentalis",0.7,"Threatened",0.352,"Threatened","Threatened",16
+"Pseudomys pilligaensis",0.514,"Threatened",0.354,"Threatened","Threatened",16
+"Pteropus gilliardorum",0.816,"Threatened",0.693,"Threatened","Threatened",16
+"Pteropus griseus",0.146,"Non threatened",0.144,"Threatened","Threatened",16
+"Pteropus intermedius",0.382,"Threatened",NA,NA,"Threatened",16
+"Pteropus lombocensis",0.172,"Non threatened",0.265,"Threatened","Threatened",16
+"Pteropus speciosus",0.822,"Threatened",0.836,"Threatened","Threatened",16
+"Rattus adustus",0.676,"Threatened",0.943,"Threatened","Threatened",16
+"Rattus blangorum",0.582,"Threatened",NA,NA,"Threatened",16
+"Rattus bontanus",0.648,"Threatened",0.513,"Threatened","Threatened",16
+"Rattus enganus",0.68,"Threatened",0.953,"Threatened","Threatened",16
+"Rattus koopmani",NA,NA,0.68,"Threatened","Threatened",16
+"Rattus korinchi",0.632,"Threatened",0.578,"Threatened","Threatened",16
+"Rattus omichlodes",0.752,"Threatened",NA,NA,"Threatened",16
+"Rattus pelurus",NA,NA,0.713,"Threatened","Threatened",16
+"Rattus salocco",0.632,"Threatened",NA,NA,"Threatened",16
+"Rattus tawitawiensis",NA,NA,0.904,"Threatened","Threatened",16
+"Rattus timorensis",0.886,"Threatened",0.75,"Threatened","Threatened",16
+"Rhinolophus convexus",0.786,"Threatened",NA,NA,"Threatened",16
+"Rhinolophus keyensis",NA,NA,0.138,"Non threatened","Non threatened",3
+"Rhinolophus nereis",NA,NA,0.747,"Threatened","Threatened",16
+"Rhinolophus osgoodi",NA,NA,0.831,"Threatened","Threatened",16
+"Rhinolophus subrufus",0.196,"Non threatened",0.169,"Threatened","Threatened",16
+"Salpingotus pallidus",0.218,"Non threatened",0.148,"Non threatened","Non threatened",3
+"Scotophilus celebensis",0.384,"Threatened",0.134,"Non threatened","Non threatened",3
+"Selevinia betpakdalaensis",0.05,"Non threatened",0.092,"Non threatened","Non threatened",3
+"Sminthopsis archeri",0.088,"Non threatened",0.52,"Threatened","Threatened",16
+"Sommeromys macrorhinos",0.778,"Threatened",NA,NA,"Threatened",16
+"Sorex sinalis",0.126,"Non threatened",NA,NA,"Non threatened",3
+"Sorex thibetanus",0.02,"Non threatened",NA,NA,"Non threatened",3
+"Suncus ater",0.53,"Threatened",0.776,"Threatened","Threatened",16
+"Suncus hosei",0.644,"Threatened",0.465,"Threatened","Threatened",16
+"Sundasciurus davensis",0.78,"Threatened",0.714,"Threatened","Threatened",16
+"Sundasciurus rabori",0.664,"Threatened",0.737,"Threatened","Threatened",16
+"Tadarida latouchei",0.22,"Non threatened",NA,NA,"Non threatened",3
+"Taeromys callitrichus",0.536,"Threatened",0.357,"Threatened","Threatened",16
+"Taeromys hamatus",0.6,"Threatened",0.335,"Threatened","Threatened",16
+"Taeromys microbullatus",0.76,"Threatened",NA,NA,"Threatened",16
+"Taeromys punicans",0.814,"Threatened",0.791,"Threatened","Threatened",16
+"Taphozous achates",0.296,"Threatened",NA,NA,"Threatened",16
+"Tarsius pumilus",0.774,"Threatened",0.471,"Non threatened","Non threatened",3
+"Tateomys macrocercus",NA,NA,0.748,"Threatened","Threatened",16
+"Tateomys rhinogradoides",0.738,"Threatened",0.421,"Threatened","Threatened",16
+"Tragulus javanicus",0.286,"Threatened",0.422,"Threatened","Threatened",16
+"Tragulus williamsoni",0.898,"Threatened",NA,NA,"Threatened",16
+"Tryphomys adustus",0.586,"Threatened",0.431,"Threatened","Threatened",16
+"Tupaia dorsalis",0.1,"Non threatened",0.008,"Non threatened","Non threatened",3
+"Uromys siebersi",0.904,"Threatened",NA,NA,"Threatened",16
+"Uropsilus andersoni",0.688,"Threatened",0.465,"Threatened","Threatened",16
+"Uropsilus investigator",0.708,"Threatened",0.371,"Threatened","Threatened",16
+"Volemys musseri",0.688,"Threatened",0.476,"Threatened","Threatened",16
