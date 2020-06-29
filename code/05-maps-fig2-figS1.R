@@ -224,10 +224,11 @@ mapply(function(dfslistname, dfslist)
 
 
 
+
+############## MAKE INDIVIDUAL PLOTS (AFRICA) ###################
 rm(list=setdiff(ls(), c("GISfolder", "zz", "myColors_manual")))
 gc()
 
-############## MAKE INDIVIDUAL PLOTS (AFRICA) ###################
 #### load afr_countries_wgs 
 gadm_0 <- st_read(paste0(GISfolder, 'GADM/gadm36_levels_gpkg/gadm36_levels.gpkg'), layer='level0')
 
@@ -277,7 +278,7 @@ system.time(
 #ggfiglist_afr_comb[[3]]
 
 
-#### + loop for taxa biv subplots (AFRICA) ####
+#### ++ correcting res_df files ####
 #res_df_list <- list.files('output/dfs_for_figs/afr/', full.names=FALSE)
 #res_df_list <- res_df_list[grep("biv20_df", res_df_list)]
 #res_df_list <- res_df_list[grep("ext", res_df_list, invert=TRUE)]
@@ -322,7 +323,7 @@ all.equal(res_df11$y, res_df8$y, tolerance=0) #TRUE
 all.equal(res_df5$x, res_df6$x, tolerance=0) #TRUE
 all.equal(res_df11$y, res_df12$y, tolerance=0) #TRUE
 
-#### Should be safe to simply replace the x and y of problematic datasets ####
+#### Should be safe to simply replace the x and y of problematic datasets 
 res_df9 <- read.csv(paste0('output/dfs_for_figs/afr/', res_df_list[9]))
 res_df9$x <- res_df3$x
 res_df9$y <- res_df3$y
@@ -335,7 +336,13 @@ res_df2$y <- res_df5$y
 write.csv(res_df2, paste0('output/dfs_for_figs/afr/', res_df_list[2]), row.names=FALSE)
 
 
-# Loop
+#### + loop for taxa biv subplots (AFRICA) - with corrected files ####
+#res_df_list <- list.files('output/dfs_for_figs/afr/', full.names=FALSE)
+#res_df_list <- res_df_list[grep("biv20_df", res_df_list)]
+#res_df_list <- res_df_list[grep("ext", res_df_list, invert=TRUE)]
+res_df_list <- res_df_list[grep("comb", res_df_list, invert=TRUE)]
+ggfiglist_afr <- list()
+
 system.time(
   for (i in 1:length(res_df_list)){
     res_df0 <- read.csv(paste0('output/dfs_for_figs/afr/', res_df_list[i]))
@@ -368,7 +375,6 @@ system.time(
     
   }
 )
-#2s for 12 plots
 
 
 # filter out richness figs
@@ -432,8 +438,7 @@ system.time(
 #ggfiglist_ssea_comb[[3]]
 
 
-
-#### + loop for taxa biv subplots (SSEA) ####
+#### ++ correcting res_df files ####
 # res_df_list <- list.files('output/dfs_for_figs/ssea/', full.names=FALSE)
 # res_df_list <- res_df_list[grep("biv_df", res_df_list)]
 # res_df_list <- res_df_list[grep("ext", res_df_list, invert=TRUE)]
@@ -455,13 +460,20 @@ all.equal(res_df3$y, res_df9$y, tolerance=0)
 all.equal(res_df5$x, res_df9$x, tolerance=0)
 all.equal(res_df5$y, res_df9$y, tolerance=0)
 
-#### Should be safe to simply replace the x and y of problematic datasets ####
+#### Should be safe to simply replace the x and y of problematic datasets 
 res_df6 <- read.csv(paste0('output/dfs_for_figs/ssea/', res_df_list[6])) #issue
 res_df6$x <- res_df9$x
 res_df6$y <- res_df9$y
 head(res_df6)
 write.csv(res_df6, paste0('output/dfs_for_figs/ssea/', res_df_list[6]), row.names=FALSE)
 
+
+#### + loop for taxa biv subplots (SSEA) - with corrected files ####
+# res_df_list <- list.files('output/dfs_for_figs/ssea/', full.names=FALSE)
+# res_df_list <- res_df_list[grep("biv_df", res_df_list)]
+# res_df_list <- res_df_list[grep("ext", res_df_list, invert=TRUE)]
+res_df_list <- res_df_list[grep("comb", res_df_list, invert=TRUE)]
+ggfiglist_ssea <- list()
 
 system.time(
   for (i in 1:length(res_df_list)){
@@ -492,7 +504,6 @@ system.time(
     #ggsave(filename=paste0("output/results/results_ssea/", ggname), plot=ggfiglist_ssea[[i]], width=169, units='mm', dpi=300)
   }
 )
-#1.66s for no save figs
 
 
 # filter out richness figs
@@ -565,6 +576,8 @@ gg_bivcol_legend_vuln <- ggplot(data=zz3, aes(x=vulnplot, y=suitplot)) +
   theme_cowplot(font_size=12) +
   ylab('Rubber bioclimatic suitability') + xlab('Extinction vulnerability') +
   theme(legend.position="none", plot.margin = unit(c(0,0,0,0),"cm"))
+
+
 
 
 ########### + Concessions and PAs Overlay ###############
@@ -641,13 +654,10 @@ bottom_ssea <- plot_grid(ggfigvulnT_ssea_comb_pa, bottom_sub_ssea, labels = c('B
 
 gg_bivcol_legend_vuln_taxa <- gg_bivcol_legend_vuln +  theme_cowplot(font_size=10) + theme(legend.position="none", plot.margin = unit(c(0,0,0,0),"cm")) 
 
-#gg_bivcol_legend_vuln_taxa <- gg_bivcol_legend_vuln15 +  theme_cowplot(font_size=10) + theme(legend.position="none", plot.margin = unit(c(0,0,0,0),"cm")) 
-
-
 gg_topbottom2 <- plot_grid(top_afr, bottom_ssea, ncol = 1, label_size=8, align="v") +
   draw_plot(gg_bivcol_legend_vuln_taxa, x=0.0, y=0.68, width=0.29, height=0.24) 
 
-cowplot::save_plot("output/results/fig2.png", gg_topbottom2, base_height = overall_height+0.05, base_width=6.85) 
+cowplot::save_plot("output/results/fig2.tiff", gg_topbottom2, base_height = overall_height+0.05, base_width=6.85, dpi=300) 
 
 cowplot::save_plot("output/results/fig2_highres.png", gg_topbottom2, base_height = overall_height+0.05, base_width=6.85, dpi=1000) #super high res version
 
@@ -655,7 +665,7 @@ cowplot::save_plot("output/results/fig2_highres.png", gg_topbottom2, base_height
 
 
 
-##### + Multipanel VulnA (Text S1 Fig II) #####
+##### + Multipanel VulnA (Data S1 Fig II) #####
 ggfigvuln_afr_comb_pa <- ggfiglist_afr_comb[[2]] + geom_raster(data=afr_pa_df, aes(y=y, x=x), fill="black", alpha=0.6)
 ggfigvuln_ssea_comb_pa <- ggfiglist_ssea_comb[[2]] + geom_raster(data=ssea_pa_df, aes(y=y, x=x), fill="black", alpha=0.6)
 
@@ -884,7 +894,7 @@ system.time(cowplot::save_plot("output/results/figS1.png", gg_aoc_aor_conc, base
 gg_aoc_aor_conc_vulnA <- plot_grid(ggfiglist_afr_aoc[[2]] , ggfiglist_ssea_aoc[[2]] , labels = c('A', 'B'), nrow=2, ncol = 1, label_size=8, align="v", axis="r", rel_heights = c(rel_h_afr, rel_h_ssea), rel_widths = c(rel_w_afr, rel_w_ssea)) + #
   draw_plot(gg_aoc_legend_vuln, x=0, y=0.5, width=0.38, height=0.33) 
 
-system.time(cowplot::save_plot("output/results/textS1_results_reference_aoc_aor_conc.png", gg_aoc_aor_conc_vulnA, base_width=6.85, base_height = 6.85*(rel_h_afr+rel_h_ssea), dpi=300)) # 19s
+system.time(cowplot::save_plot("output/results/dataS1_results_reference_aoc_aor_conc.png", gg_aoc_aor_conc_vulnA, base_width=6.85, base_height = 6.85*(rel_h_afr+rel_h_ssea), dpi=300)) # 19s
 
 
 

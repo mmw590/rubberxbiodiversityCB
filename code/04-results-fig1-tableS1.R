@@ -44,9 +44,9 @@ mat_suit <- raster::mask(mat_suit, mat_land_use, maskvalue=0, updatevalue=0)
 
 ### Stack
 suit_vuln_stack_afr <- stack(mat_suit, mat_pa, mat_rich, mat_vulnA, mat_vulnT, mat_forest, mat_acc, mat_carb, mat_country)
-suit_vuln_spdf_afr <- rasterToPoints(suit_vuln_stack_afr, spatial=TRUE, progress='text')
+suit_vuln_stiff_afr <- rasterToPoints(suit_vuln_stack_afr, spatial=TRUE, progress='text')
 
-suit_vuln_vals_afr <- as.data.frame(suit_vuln_spdf_afr) 
+suit_vuln_vals_afr <- as.data.frame(suit_vuln_stiff_afr) 
 
 suit_vuln_vals_afr <- suit_vuln_vals_afr %>% 
   rename(suit = names(suit_vuln_vals_afr)[1], 
@@ -145,9 +145,9 @@ mat_suit <- raster::mask(mat_suit, mat_land_use, maskvalue=0, updatevalue=0)
 ### Stack raster
 suit_vuln_stack_ssea <- stack(mat_suit, mat_pa, mat_rich, mat_vulnA, mat_vulnT, mat_forest,  mat_acc, mat_carb, mat_country, mat_conc )
 
-suit_vuln_spdf_ssea <- rasterToPoints(suit_vuln_stack_ssea, spatial=TRUE, progress='text') #%>% st_as_sf() #takes a minute using sf
+suit_vuln_stiff_ssea <- rasterToPoints(suit_vuln_stack_ssea, spatial=TRUE, progress='text') #%>% st_as_sf() #takes a minute using sf
 
-suit_vuln_vals_ssea <- as.data.frame(suit_vuln_spdf_ssea) 
+suit_vuln_vals_ssea <- as.data.frame(suit_vuln_stiff_ssea) 
 
 suit_vuln_vals_ssea <- suit_vuln_vals_ssea %>% 
   rename(suit = names(suit_vuln_vals_ssea)[1], 
@@ -424,7 +424,7 @@ suit_vuln_vals3 <- suit_vuln_vals3 %>%
 
 # Of land available for rubber expansion, just 0.1 Mha in Africa and none in Asia/New Guinea had high bioclimatic suitability for rubber (suitability >0.8) (Figure 1).
 suit_vuln_vals3 %>% filter(suit > 0.8) %>% group_by(region) %>% summarize(n = n(), Mha = n()*0.01) 
-suit_vuln_vals3 %>% filter(suit > 0.6) %>% group_by(region) %>% summarize(n = n(), Mha = n()*0.01) 
+
 
 # Among these highly suitable areas, none were minimal in extinction vulnerability (vulnerability ≤0.2) (Figure 1 and Table S1; see also Text S1).
 suit_vuln_vals3 %>% filter(suit > 0.8 & vulnA <= 0.2) %>% group_by(region, suitclass, vulnAclass, comprom.vulnT.1) %>% summarize(n = n(), Mha = n()*0.01) %>% arrange(region, suitclass, comprom.vulnT.1)
@@ -543,10 +543,10 @@ gg_fig1b_bin <- gg_bin_vulnT_ssea +
 gg_bin <- plot_grid(gg_fig1a_bin, gg_fig1b_bin, labels=c('A', 'B'), label_size=10,  
                            align = 'h', nrow=1, ncol=2, rel_widths = c(1, 1)) #+ 
 
-cowplot::save_plot("output/results/fig1.png", gg_bin, base_width=6.85, base_height=6.85/2, dpi=300)
+cowplot::save_plot("output/results/fig1.tiff", gg_bin, base_width=6.85, base_height=6.85/2, dpi=300)
 
 
-############# Text S1 (vulnA) Fig I Interpolate Point Density Plot #############
+############# Data S1 (vulnA) Fig I Interpolate Point Density Plot #############
 
 gg_bin_vulnA_afr <- ggplot(data=suit_vuln_vals_gg_afr, aes(y=suit, x=vulnA)) + 
   stat_bin_2d(binwidth = c(.02, .02)) + #, aes(fill = ..density..)
@@ -593,7 +593,7 @@ gg_fig1b_bin <- gg_bin_vulnA_ssea +
 gg_bin <- plot_grid(gg_fig1a_bin, gg_fig1b_bin, labels=c('A', 'B'), label_size=10,  
                     align = 'h', nrow=1, ncol=2, rel_widths = c(1, 1)) #+ 
 
-cowplot::save_plot("output/results/dataS1_fig1.png", gg_bin, base_width=6.85, base_height=6.85/2, dpi=300)
+cowplot::save_plot("output/results/dataS1_fig1.tiff", gg_bin, base_width=6.85, base_height=6.85/2, dpi=300)
 
 
 
@@ -608,16 +608,16 @@ cowplot::save_plot("output/results/dataS1_fig1.png", gg_bin, base_width=6.85, ba
 ##### /Distrb of points by country: ####
 table(suit_vuln_vals3$country)
 
-country_aoc <- suit_vuln_vals3 %>% filter(comprom.vulnT.1 <7) %>% group_by(region, country) %>% summarize(Mha=n()*0.01, pct=n()/nrow(.)*100) %>% arrange(desc(pct))# 47% in Indonesia, 14% PNG, 
+country_aoc <- suit_vuln_vals3 %>% filter(comprom.vulnT.1 <7) %>% group_by(region, country) %>% summarize(Mha=n()*0.01, pct=n()/nrow(.)*100) %>% arrange(desc(pct))# 47% in Indonesia, 14% tiff, 
 View(country_aoc)
 write.csv(country_aoc, "output/results/aoc_by_country.csv")
 
-country_suitable <- suit_vuln_vals3 %>% filter(suit >0.6) %>% group_by(region, country) %>% summarize(Mha=n()*0.01, pct=n()/nrow(.)*100) %>% arrange(desc(pct)) #countries with medium-high suitability. PNG not incld. 
+country_suitable <- suit_vuln_vals3 %>% filter(suit >0.6) %>% group_by(region, country) %>% summarize(Mha=n()*0.01, pct=n()/nrow(.)*100) %>% arrange(desc(pct)) #countries with medium-high suitability. tiff not incld. 
 # Indo, Guinea, Ethiopia, Liberia have >0.10 Mha areas of med/high suitability
 
 country_lowvuln <- suit_vuln_vals3 %>% filter(vulnT <=0.4) %>% group_by(region, country) %>% summarize(Mha=n()*0.01, pct=n()/nrow(.)*100) %>% arrange(desc(pct)) #low vuln areas 
 
-country_suitable <- suit_vuln_vals3 %>% filter(suit >0.4) %>% group_by(region, country) %>% summarize(Mha=n()*0.01, pct=n()/nrow(.)*100) %>% arrange(desc(pct)) #countries with medium-high suitability. PNG not incld. 
+country_suitable <- suit_vuln_vals3 %>% filter(suit >0.4) %>% group_by(region, country) %>% summarize(Mha=n()*0.01, pct=n()/nrow(.)*100) %>% arrange(desc(pct)) #countries with medium-high suitability. tiff not incld. 
 # Indo, Guinea, Ethiopia, Liberia have >0.10 Mha areas of med/high suitability
 
 

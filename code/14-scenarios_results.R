@@ -190,7 +190,7 @@ scenfig_affspp <- ggplot(data=scen_df_plot, aes(x=lost_area, y=nspplostrange0.10
 
 scenfig_comb <- plot_grid(scenfigC_cumsuit, scenfigC, scenfigC_affspp, scenfig_cumsuit, scenfig, scenfig_affspp,  ncol=3, labels = c('A', 'B', 'C', 'D', 'E', 'F'), label_size=8  )
 
-cowplot::save_plot("output/results/fig3.png", scenfig_comb, base_width=6.85, base_height = 6.85/3*2, dpi=300)
+cowplot::save_plot("output/results/fig3.tiff", scenfig_comb, base_width=6.85, base_height = 6.85/3*2, dpi=300)
 
 
 
@@ -317,7 +317,7 @@ scen_histC <- plot_grid( hist_rangeloss_scen_high, hist_rangeloss_scen_tax_high,
 ### plot labels 
 scen_histC_labs <- scen_histC + draw_plot_label(c("A", "B", "C", "D", "E","F"), x=rep(c(0.03,0.34,0.67),2), y=rep(c(1,0.55),each=3), fontface="bold", size=10)
 
-cowplot::save_plot("output/results/fig4.png", scen_histC_labs, base_width=6.85, base_height = 4, dpi=300)
+cowplot::save_plot("output/results/fig4.tiff", scen_histC_labs, base_width=6.85, base_height = 4, dpi=300)
 
 
 
