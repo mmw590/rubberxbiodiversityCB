@@ -6,9 +6,7 @@ Wang M. M. H., L. R. Carrasco, D. P. Edwards. 2020. Reconciling rubber expansion
 
 ## About
 
-A static version of the code and input data can be accessed at [link](https://doi.org/10.5281/zenodo.1200255). The development version of this repository is available at [github.com/mmw590/rubberxbiodiversityCB](https://github.com/mmw590/rubberxbiodiversityCB).  
-
-Please refer to [Key Resources Table][tbl] (also in Methods of the article) for where to download non-redistributable data.  
+A static version of the code and input data can be accessed at [this link](https://doi.org/10.5281/zenodo.3886851). The development version of this repository is available at [github.com/mmw590/rubberxbiodiversityCB](https://github.com/mmw590/rubberxbiodiversityCB).  
 
 I wrote the scripts to be run in the specified order, but feel free to use what you need. I have tried to make the filenames informative of their content.  
 
@@ -37,6 +35,8 @@ A high-resolution version of Figure 2:
 ## Key Resources Table (where to download data)
 [Key Resources Table (in pdf)](output/KEY-RESOURCES-TABLE.pdf)  
 Some datasets are not available for redistribution due to licensing restrictions, but can be downloaded from the original sources as listed in the Key Resources Table.  
+
+
   
 
 
