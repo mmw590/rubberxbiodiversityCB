@@ -682,7 +682,7 @@ gg_bivcol_legend_vuln_taxa <- gg_bivcol_legend_vuln +  theme_cowplot(font_size=1
 gg_topbottom2 <- plot_grid(top_afr, bottom_ssea, ncol = 1, label_size=8, align="v") +
   draw_plot(gg_bivcol_legend_vuln_taxa, x=0.0, y=0.68, width=0.29, height=0.24) 
 
-cowplot::save_plot("output/results/textS1_fig2.png", gg_topbottom2, base_height = overall_height+0.05, base_width=6.85) 
+cowplot::save_plot("output/results/dataS1_fig2.png", gg_topbottom2, base_height = overall_height+0.05, base_width=6.85) 
 
 
 

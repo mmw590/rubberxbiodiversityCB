@@ -36,45 +36,10 @@ A high-resolution version of Figure 2:
 
 ## Key Resources Table (where to download data)
 [Key Resources Table (in pdf)](output/KEY-RESOURCES-TABLE.pdf)  
-Apologies that I didn't have time to figure out redistribution rights so I am not currently able to provide all the input data I used directly...but here's where you can get the data...  
+Some datasets are not available for redistribution due to licensing restrictions, but can be downloaded from the original sources as listed in the Key Resources Table.  
   
 
 
-
-## sessionInfo()
-
-'''
-> sessionInfo()
-R version 4.0.0 (2020-04-24)
-Platform: x86_64-w64-mingw32/x64 (64-bit)
-Running under: Windows 10 x64 (build 17134)
-
-Matrix products: default
-
-locale:
-[1] LC_COLLATE=English_United Kingdom.1252  LC_CTYPE=English_United Kingdom.1252   
-[3] LC_MONETARY=English_United Kingdom.1252 LC_NUMERIC=C                           
-[5] LC_TIME=English_United Kingdom.1252    
-
-attached base packages:
-[1] stats     graphics  grDevices datasets  utils     methods   base     
-
-other attached packages:
- [1] classInt_0.4-3    magick_2.3        scales_1.1.1      data.table_1.12.8 lwgeom_0.2-4     
- [6] renv_0.10.0       cowplot_1.0.0     ggplot2_3.3.1     fasterize_1.0.2   sf_0.9-3         
-[11] raster_3.1-5      sp_1.4-2          tidyr_1.1.0       dplyr_1.0.0      
-
-loaded via a namespace (and not attached):
- [1] xfun_0.14          tidyselect_1.1.0   purrr_0.3.4        lattice_0.20-41    colorspace_1.4-1  
- [6] vctrs_0.3.0        generics_0.0.2     testthat_2.3.2     htmltools_0.4.0    utf8_1.1.4        
-[11] rlang_0.4.6        e1071_1.7-3        pillar_1.4.4       glue_1.4.1         withr_2.2.0       
-[16] DBI_1.1.0          lifecycle_0.2.0    munsell_0.5.0      gtable_0.3.0       codetools_0.2-16  
-[21] evaluate_0.14      knitr_1.28         labeling_0.3       parallel_4.0.0     class_7.3-17      
-[26] fansi_0.4.1        Rcpp_1.0.4.6       KernSmooth_2.23-17 backports_1.1.7    desc_1.2.0        
-[31] pkgload_1.1.0      farver_2.0.3       digest_0.6.25      grid_4.0.0         rprojroot_1.3-2   
-[36] rgdal_1.5-8        cli_2.0.2          tools_4.0.0        magrittr_1.5       tibble_3.0.1      
-[41] crayon_1.3.4       pkgconfig_2.0.3    ellipsis_0.3.1     assertthat_0.2.1   rmarkdown_2.2     
-[46] rstudioapi_0.11    R6_2.4.1           units_0.6-6        compiler_4.0.0  '''
 
 
 ### Animal icons

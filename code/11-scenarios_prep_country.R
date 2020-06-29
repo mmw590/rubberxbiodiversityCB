@@ -1,11 +1,10 @@
 #### rubberxbiodiversityCB 
 #### 11-scenarios_prep_country.R ####
 
-library(tidyverse)
+library(dplyr)
 library(data.table)
 
 # Create output folders ####
-
 if (!dir.exists(file.path('output/', 'country_scenario'))) {
   (dir.create(file.path('output/', 'country_scenario'))) }
 
@@ -279,14 +278,14 @@ mapply(function(dfslistname, dfslist)
 
 
 
-######### Scenario simulations (combine 11 countries + not 11 countries) #####
+######### Example code for running scenario simulations directly in R #####
 rm(list=ls())
 gc()
 
-# source('code/21.8-country_scenarios_fxn.R')
+# source('code/12.0-country_scenarios_fxn.R') # different wd, can't directly source unless you change the directories there
 
 
-##### 21.8-country_scenarios_fxn.R ####
+##### code in 12.0-country_scenarios_fxn.R ####
 # Written for use in HPC, adapt as required for your HPC system
 
 ## Description of variables:
@@ -298,11 +297,13 @@ gc()
 # res is lost area (no. of cells converted), sum of forested range lost (1cell=100km2=10,000ha=0.01Mha), sum of % range loss, no. of spp lost any amount of range, no. of spp lost >=10% of range, average suitability of converted cells 
 
 
+
 #### Function for 2 criteria to convert on
 # inputs same as above but
 # vals_mod is a data.matrix/table/frame with 4 columns: suit, forest, and the two criteria variables the scenario is based on. each row represents a cell in the grid.
-# In Country Simulations, the first criteria is conv.ord, which signals that these cells are within threshold of restricted expansion in 11 countries OR outside 11 countries 
-## In Country Simulations (forced expansion in 11 countries first), the first criteria is conv.ord, which is the order for the first 41 cells to be converted within the 11 countries . 
+# In Country Simulations, the first criteria [,3] is conv.ord.41, which is the order for the first 41 cells to be converted within the 11 countries. 
+# [,4] is comprom.vuln and [,5] is optim4 
+# [,6] is a random number column (which allows for randomization within duplicate values)
 
 scen_results_nvar2 <- function(vals_mod, vals_spp, spp_ranges, nrows=700){
   vals_spp = cbind(vals_mod, sample.int(nrow(vals_mod)), vals_spp) #cbind scenario vals, random numbe column, spp distrb
@@ -365,7 +366,7 @@ scen_results_nvar2 <- function(vals_mod, vals_spp, spp_ranges, nrows=700){
 #### Function for 3 criteria to convert on
 # inputs same as above but
 # vals_mod is a data.matrix/table/frame with 5 columns: suit, forest, and the three criteria variables the scenario is based on. each row represents a cell in the grid.
-# In Country Simulations, the first criteria [,3] is conv.ord, which is the order for the first 41 cells to be converted within the 11 countries. 
+# In Country Simulations, the first criteria [,3] is conv.ord.41, which is the order for the first 41 cells to be converted within the 11 countries. 
 # [,4] is comprom.vuln and [,5] is optim4 
 # [,6] is a random number column (which allows for randomization within duplicate values)
 
@@ -427,30 +428,19 @@ scen_results_nvar3 <- function(vals_mod, vals_spp, spp_ranges, nrows=700){
 
 
 
+
 ###### + This section is for loading libraries/data/parameters used in all scenarios simulations ##### 
 #### + Load libraries ####
 library(dplyr)
 library(data.table)
 library(parallel)
-# # /home/bop17mw/R/x86_64-pc-linux-gnu-library/3.5/data.table/libs
-# update.packages(lib.loc = "~/R/x86_64-pc-linux-gnu-library/3.5/data.table/libs")
-
-
-#### + Set wd ####
-#setwd('/data/bop17mw/rubberxbiodiversity/')
-#setwd("C:/Users/bop17mw/Google Drive/1-Uni-of-Sheffield/1-PhD/Ch1-CultivationVsConservation/rubberxbiodiversity") #on PC
-
-
 
 #### + Load data ####
-
 # Spp matrix
-#scen_spp <- fread('input/suit_vuln_scenario_combspp.csv') 
 scen_spp <- fread('output/suit_vuln_scenario_combspp.csv') #on PC
 scen_spp <- data.matrix(scen_spp) #6.1Gb if replace NAs with 0s/3Gb if not
 
 # suit vuln vals
-#suit_vuln_vals3 <- fread('input/suit_vuln_vals3_scenario.csv')
 suit_vuln_vals3 <- fread('output/suit_vuln_vals3_scenario.csv') #on PC
 suit_vuln_vals3 <- suit_vuln_vals3[order(cell.id, x, y, region)]
 
@@ -471,10 +461,8 @@ suit_vuln_not11 <- suit_vuln_vals3 %>%
 
 
 # load list of sorted scen_in with 41 cells in 11 countries
-#list_scen_in_c11 <- list.files("input/country_scenario/", "^scen_in_c11_", full.names = TRUE)
 list_scen_in_c11 <- list.files("output/country_scenario/", "^scen_in_c11_", full.names = TRUE)
 list_scen_in_c11 <- lapply(list_scen_in_c11, fread)
-#print(list.files("input/country_scenario/", "^scen_in_c11_"))
 print(list.files("output/country_scenario/", "^scen_in_c11_"))
 
 
@@ -483,16 +471,13 @@ print(list.files("output/country_scenario/", "^scen_in_c11_"))
 
 ####### + Combine 11 countries + not 11 countries with conv.order to suit_vuln_vals3 ####
 scen_in_c11 <- list_scen_in_c11[[1]]  ## pre-sorted by avg.suit.acc
+scen_in_c11$conv.ord <- 1 #new column for conversion order in 11 countries (first 41 cells/0.407Mha) #only these 41 cells are allowed to be converted (in any order along with cells outside 11 countries)
 #scen_in_c11$conv.ord <- 1:41  #if we force 0.41Mha conversion in 11 countries first, in pre-sorted order
-scen_in_c11$conv.ord <- 1  #only these 41 cells are allowed to be converted (in any order along with cells outside 11 countries)
 
 #combine 
 scen_in <- rbind(scen_in_c11, suit_vuln_not11, fill=TRUE) %>% dplyr::select(cell.id, conv.ord)
 
 scen_in <- left_join(suit_vuln_vals3, scen_in) %>% as.data.table() 
-
-#table(scen_in$conv.ord)
-#unique(scen_in$conv.ord) #NAs for the non-converted areas in 11 countries (not the 41 cells)
 
 
 #### Extract needed columns for simulation 
@@ -502,9 +487,6 @@ scen_in <- data.matrix(scen_in)
 
 
 ##### + Start conversion simulation #####
-#rm(list=setdiff(ls(), c("scen_results_nvar2", "scen_in", "scen_spp", "spp_ranges", "res_0", "nrep", "ncores")))
-#gc()
-
 system.time(scen_suit_rep <- scen_results_nvar2(vals_mod=scen_in, vals_spp=scen_spp, spp_ranges=spp_ranges) ) #16s for single rep, 1.5mb output
 
 scen_df <- scen_suit_rep[[1]]
@@ -527,16 +509,12 @@ fwrite(spprangeloss_df, 'output/country_scenario/countrysim_spprangelosstbl_scen
 
 ####### + Combine 11 countries + not 11 countries with conv.order to suit_vuln_vals3 ####
 scen_in_c11 <- list_scen_in_c11[[2]]  ## pre-sorted by avg.suit.acc
-scen_in_c11$conv.ord <- 1  #new column for conversion order in 11 countries (first 41 cells/0.407Mha)
-#scen_in_c11$conv.ord <- 1:41  #new column for conversion order in 11 countries (first 41 cells/0.407Mha)
+scen_in_c11$conv.ord <- 1  
 
 #combine 
 scen_in <- rbind(scen_in_c11, suit_vuln_not11, fill=TRUE) %>% dplyr::select(cell.id, conv.ord)
 
 scen_in <- left_join(suit_vuln_vals3, scen_in) %>% as.data.table() 
-
-#table(scen_in$conv.ord)
-#unique(scen_in$conv.ord) #NAs for the non-converted areas in 11 countries (not the 41 cells)
 
 
 #### Extract needed columns for simulation 
@@ -546,9 +524,6 @@ scen_in <- data.matrix(scen_in)
 
 
 ##### + Start conversion simulation #####
-#rm(list=setdiff(ls(), c("scen_results_nvar2", "scen_in", "scen_spp", "spp_ranges", "res_0", "nrep", "ncores")))
-#gc()
-
 system.time(scen_suit_rep <- scen_results_nvar2(vals_mod=scen_in, vals_spp=scen_spp, spp_ranges=spp_ranges) ) #11s for single rep, 1.5mb output
 
 scen_df <- scen_suit_rep[[1]]
@@ -576,15 +551,12 @@ print(list.files("output/country_scenario/", "^scen_in_c11_"))
 ####### + Combine 11 countries + not 11 countries with conv.order to suit_vuln_vals3 ####
 scen_in_c11 <- list_scen_in_c11[[3]]  ## pre-sorted by comprom and optim
 scen_in_c11$conv.ord <- 1
-#scen_in_c11$conv.ord <- 1:41  #new column for conversion order in 11 countries (first 41 cells/0.407Mha)
 
 #combine 
 scen_in <- rbind(scen_in_c11, suit_vuln_not11, fill=TRUE) %>% dplyr::select(cell.id, conv.ord)
 
 scen_in <- left_join(suit_vuln_vals3, scen_in) %>% as.data.table() 
 
-#table(scen_in$conv.ord)
-#unique(scen_in$conv.ord) #NAs for the non-converted areas in 11 countries (not the 41 cells)
 
 #### Extract needed columns for simulation 
 scen_in <- scen_in[order(cell.id, x, y, region)] #same order as ori suit_vuln_vals3
@@ -593,9 +565,6 @@ scen_in <- data.matrix(scen_in)
 
 
 ##### + Start conversion simulation #####
-#rm(list=setdiff(ls(), c("scen_results_nvar3", "scen_in", "scen_spp", "spp_ranges", "res_0", "nrep", "ncores")))
-#gc()
-
 system.time(scen_suit_rep <- scen_results_nvar3(vals_mod=scen_in, vals_spp=scen_spp, spp_ranges=spp_ranges)) #10s for single rep, 1.5mb output
 
 scen_df <- scen_suit_rep[[1]]
@@ -622,7 +591,6 @@ print(list.files("output/country_scenario/", "^scen_in_c11_"))
 ####### + Combine 11 countries + not 11 countries with conv.order to suit_vuln_vals3 ####
 scen_in_c11 <- list_scen_in_c11[[4]]  ## pre-sorted by comprom and optim
 scen_in_c11$conv.ord <- 1
-#scen_in_c11$conv.ord <- 1:41  #new column for conversion order in 11 countries (first 41 cells/0.407Mha)
 
 #combine 
 scen_in <- rbind(scen_in_c11, suit_vuln_not11, fill=TRUE) %>% dplyr::select(cell.id, conv.ord)
@@ -639,9 +607,6 @@ scen_in <- data.matrix(scen_in)
 
 
 ##### + Start conversion simulation #####
-#rm(list=setdiff(ls(), c("scen_results_nvar3", "scen_in", "scen_spp", "spp_ranges", "res_0", "nrep", "ncores")))
-#gc()
-
 system.time(scen_suit_rep <- scen_results_nvar3(vals_mod=scen_in, vals_spp=scen_spp, spp_ranges=spp_ranges)) #14s for single rep, 1.5mb output
 
 scen_df <- scen_suit_rep[[1]]
@@ -668,7 +633,6 @@ print(list.files("output/country_scenario/", "^scen_in_c11_"))
 ####### + Combine 11 countries + not 11 countries with conv.order to suit_vuln_vals3 ####
 scen_in_c11 <- list_scen_in_c11[[5]]  ## pre-sorted by comprom and optim
 scen_in_c11$conv.ord <- 1
-#scen_in_c11$conv.ord <- 1:41  #new column for conversion order in 11 countries (first 41 cells/0.407Mha)
 
 #combine 
 scen_in <- rbind(scen_in_c11, suit_vuln_not11, fill=TRUE) %>% dplyr::select(cell.id, conv.ord)
@@ -685,9 +649,6 @@ scen_in <- data.matrix(scen_in)
 
 
 ##### + Start conversion simulation #####
-#rm(list=setdiff(ls(), c("scen_results_nvar3", "scen_in", "scen_spp", "spp_ranges", "res_0", "nrep", "ncores")))
-#gc()
-
 system.time(scen_suit_rep <- scen_results_nvar3(vals_mod=scen_in, vals_spp=scen_spp, spp_ranges=spp_ranges)) #9s for single rep, 1.5mb output
 
 scen_df <- scen_suit_rep[[1]]

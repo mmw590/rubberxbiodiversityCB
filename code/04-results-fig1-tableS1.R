@@ -593,7 +593,7 @@ gg_fig1b_bin <- gg_bin_vulnA_ssea +
 gg_bin <- plot_grid(gg_fig1a_bin, gg_fig1b_bin, labels=c('A', 'B'), label_size=10,  
                     align = 'h', nrow=1, ncol=2, rel_widths = c(1, 1)) #+ 
 
-cowplot::save_plot("output/results/textS1_fig1.png", gg_bin, base_width=6.85, base_height=6.85/2, dpi=300)
+cowplot::save_plot("output/results/dataS1_fig1.png", gg_bin, base_width=6.85, base_height=6.85/2, dpi=300)
 
 
 

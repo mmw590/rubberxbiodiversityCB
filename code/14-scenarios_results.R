@@ -17,7 +17,6 @@ stderr <- function(x, na.rm=FALSE) {
 # 1.1 Country-Restricted Output ####
 scen_dflist <- list.files('output/country_scenario/', full.names=TRUE)
 scen_dflist <- grep("countrysim_scen_df", scen_dflist, value=TRUE)
-#scen_dflist <- grep("test", scen_dflist, value=TRUE, invert=TRUE)
 scen_dflist <- grep("vulnA", scen_dflist, value=TRUE, invert=TRUE)
 scen_dflist
 scen_dflist <- lapply(scen_dflist, fread)
@@ -36,7 +35,7 @@ table(scen_df_longC$scenario)
 
 
 # + Numbers for Results (country) ####
-# Comparing the average rubber bioclimatic suitability of converted land area across the different scenarios, Scenario 2 (Conservation) only converted areas with suitability values close to zero (mean ± 1SE = 0.0001 ± 0.000004; Figure 3A and 3C). The conservation-driven scenario is thus impractical for rubber expansion, with poor suitability leading to lower yields and higher land area demands to meet production targets. While not as high as the production-driven scenario (0.667 ± 0.011 / 0.629 ± 0.012), the average suitability of areas converted in all three compromise scenarios remained high (3a = 0.635 ± 0.011; 3b = 0.573 ± 0.010; 3c = 0.629 ± 0.011; Figure 3A / (3a = 0.595 ± 0.0123; 3b = 0.529 ± 0.008; 3c = 0.591 ± 0.012; Figure 3D), suggesting higher acceptability to rubber producers. 
+# Comparing the average rubber bioclimatic suitability of converted land area across the different scenarios
 cumsuit1 <- scen_df_longC %>% group_by(scenario) %>% summarize(cumsuit.mean=mean(cumsuit), cumsuit.se=stderr(cumsuit))
 
 scen_df_longC %>% group_by(scenario) %>% summarize(rangeloss_mean=mean(rangeloss_sum, na.rm=TRUE), rangeloss_max=max(rangeloss_sum, na.rm=TRUE))
@@ -71,10 +70,16 @@ cumsuit2 <- scen_df_long %>% group_by(scenario) %>% summarize(cumsuit.mean=mean(
 scen_df_long %>% group_by(scenario) %>% summarize(rangeloss_mean=mean(rangeloss_sum, na.rm=TRUE), rangeloss_max=max(rangeloss_sum, na.rm=TRUE))
 scen_df_long %>% group_by(scenario) %>% summarize(pctrangeloss_mean=mean(pctrangeloss_sum, na.rm=TRUE), pctrangeloss_max=max(pctrangeloss_sum, na.rm=TRUE))
 
-# Average suitability of converted land in Scenarios 1 and 3a-c was 6-8% higher in unrestricted simulations (Figure 3D). 
+# Average suitability of converted land in Scenarios 1 and 3a-c 
 (cumsuit2$cumsuit.mean-cumsuit1$cumsuit.mean)/cumsuit1$cumsuit.mean*100
 
+
 # Relative to country-restricted simulations, unrestricted simulations led to small-moderate reductions in species impacts under Scenario 1 (Production), but did not change the trends for Scenario 2 (Conservation) (Figure 3BC, EF). 
+
+check <- scen_df_long %>% filter(lost_area %in% c(3.90)) %>% dplyr::select(lost_area, cumsuit, rangelossMha_mean_allspp, nspplostrange0.10, scenario)
+
+checkC <- scen_df_longC %>% filter(lost_area %in% c(3.90)) %>% dplyr::select(lost_area, cumsuit, rangelossMha_mean_allspp, nspplostrange0.10, scenario)
+
 checkC$cumsuit-check$cumsuit
 (checkC$rangelossMha_mean_allspp-check$rangelossMha_mean_allspp)
 (checkC$rangelossMha_mean_allspp-check$rangelossMha_mean_allspp)/checkC$rangelossMha_mean_allspp
@@ -82,27 +87,6 @@ checkC$cumsuit-check$cumsuit
 checkC$nspplostrange0.10; check$nspplostrange0.10
 (checkC$nspplostrange0.10-check$nspplostrange0.10)
 (checkC$nspplostrange0.10-check$nspplostrange0.10)/checkC$nspplostrange0.10
-
-# (not in paper)
-# For example, at 3.90 Mha expansion, unrestricted simulations reduced the cumulative mean range loss by 0.019Mha or 19% (Figure 3B, E) and the number of affected species from 43 to 74 (Figure 3E-F). 
-check <- scen_df_long %>% filter(lost_area %in% c(3.90)) %>% dplyr::select(lost_area, cumsuit, rangelossMha_mean_allspp, nspplostrange0.10, scenario)
-
-checkC <- scen_df_longC %>% filter(lost_area %in% c(3.90)) %>% dplyr::select(lost_area, cumsuit, rangelossMha_mean_allspp, nspplostrange0.10, scenario)
-
-
-# At 2.45 Mha expansion, unrestricted simulations reduced the cumulative mean range loss by 0.008 Mha / 8,000 ha or 13% (Figure 3B, E) and the number of affected species from 46 to 21 (Figure 3E-F). 
-check <- scen_df_long %>% filter(lost_area %in% c(2.45)) %>% dplyr::select(lost_area, cumsuit, rangelossMha_mean_allspp, nspplostrange0.10, scenario)
-
-checkC <- scen_df_longC %>% filter(lost_area %in% c(2.45)) %>% dplyr::select(lost_area, cumsuit, rangelossMha_mean_allspp, nspplostrange0.10, scenario)
-
-
-
-# However, once expansion exceeds ~6 Mha, the differences between country-restriction and unrestricted simulations diminish  
-check <- scen_df_long %>% filter(lost_area %in% c(3.90)) %>% dplyr::select(lost_area, cumsuit, rangelossMha_mean_allspp, nspplostrange0.10, scenario)
-
-checkC <- scen_df_longC %>% filter(lost_area %in% c(3.90)) %>% dplyr::select(lost_area, cumsuit, rangelossMha_mean_allspp, nspplostrange0.10, scenario)
-
-str(check)
 
 
 
@@ -206,7 +190,7 @@ scenfig_affspp <- ggplot(data=scen_df_plot, aes(x=lost_area, y=nspplostrange0.10
 
 scenfig_comb <- plot_grid(scenfigC_cumsuit, scenfigC, scenfigC_affspp, scenfig_cumsuit, scenfig, scenfig_affspp,  ncol=3, labels = c('A', 'B', 'C', 'D', 'E', 'F'), label_size=8  )
 
-cowplot::save_plot("output/results/Fig3_A-F.png", scenfig_comb, base_width=6.85, base_height = 6.85/3*2, dpi=300)
+cowplot::save_plot("output/results/fig3.png", scenfig_comb, base_width=6.85, base_height = 6.85/3*2, dpi=300)
 
 
 
@@ -223,7 +207,6 @@ rm(suit_vuln_spp)
 # Load IUCN red list
 forspp_corr <- read.csv("data/forestdependentspecies_iucnredlist2019.csv")
 head(forspp_corr)
-#forspp_corr[duplicated(forspp_corr$SCINAME) | duplicated(forspp_corr$SCINAME, fromLast = TRUE), ]
 
 forspp_corr2 <- forspp_corr %>% distinct(SCINAME, category, class) 
 nrow(forspp_corr2) == n_distinct(forspp_corr$SCINAME) #check if TRUE
@@ -236,7 +219,6 @@ sppnames_iucn %>% group_by(category) %>% summarize(n=n())
 ### + Load spprangeloss tbls from simulations & merge with sppnames/iucn categories ####
 dflist <- list.files('output/country_scenario', full.names=TRUE)
 dflist <- grep('spprangelosstbl_scen', dflist, value=TRUE)
-dflist <- grep('test', dflist, value=TRUE, invert=TRUE)
 dflist
 dflist <- lapply(dflist, fread)
 
@@ -258,12 +240,6 @@ spprangeloss_dfC$iucn_category <- fct_relevel(spprangeloss_dfC$iucn_category, "C
 ### + Numbers for Results ####
 head(spprangeloss_dfC)
 
-#Under Scenario 1 (Production), 21-43 (46-74) species are predicted to lose ≥10% of their forested range under 2.45-3.90 Mha of expansion, of which 1-3 (4-6) species would lose ≥50% of their forested range (Figure 4), 
-#whereas no species would be affected in Scenario 2 (Conservation). 
-#Scenario 3a (Compromise biodiversity) would reduce the number of affected species to 8-32 (18-25),
-#whilst Scenarios 3b (Compromise suitability) and 3c (Compromise both simultaneously) would further reduce this number to 6-15 (8-25) and 8-16 (14-25) respectively
-#Scenario 3a also caused 1-2 species to lose ≥50% (2-3) of their forested range, but the other compromise scenarios (3b & 3c) would drive 1-3 spp (Figure 4). 
-
 (spprangeloss_sum_10 <- spprangeloss_dfC %>% group_by(scenario) %>% 
     summarize(naffspp10_low=sum(percent_rangeloss_low>=10), naffspp10_high=sum(percent_rangeloss_high>=10)) )
 
@@ -277,7 +253,7 @@ head(spprangeloss_dfC)
 
 ( spprangeloss_sum_50 <- spprangeloss_dfC %>% group_by(scenario, class) %>% 
     summarize(naffspp_high50=sum(percent_rangeloss_high>=50)) )
-# 3 mammals lose >=50% range in scenario1
+
 
 
 
@@ -288,7 +264,6 @@ hist_spprangeloss_df_0_highC <- spprangeloss_dfC %>% filter(percent_rangeloss_hi
   mutate(rangeloss.class = cut(percent_rangeloss_high, breaks=seq(10,105,5),include.lowest = TRUE, right = FALSE, labels=c(seq(10.1,100.1,5)) ) , orirange.class=cut(ori_range, breaks=c(0,10,100,1000,10000,100000), labels=c("0-0.1 Mha", "0.1-1 Mha", "1-10 Mha", "10-100 Mha", "100-1000 Mha")) ) %>% filter(scenario %in% c("1-Production", "3a-Compromise Biodiversity"))
 
 hist_spprangeloss_df_0_highC$rangeloss.class <- as.numeric(as.character(hist_spprangeloss_df_0_highC$rangeloss.class))
-hist_spprangeloss_df_0_highC$scenario <- recode(hist_spprangeloss_df_0_highC$scenario, "1-Production" = "A     1-Production", "3a-Compromise Biodiversity" = "D     3-Compromise") #change the scenario label for each histogram
 
 head(hist_spprangeloss_df_0_highC)
 
@@ -351,7 +326,5 @@ cowplot::save_plot("output/results/fig4.png", scen_histC_labs, base_width=6.85, 
 #### + specific spp that get hammered ####
 checkC <- spprangeloss_dfC %>%  filter(percent_rangeloss_high>=50) %>% group_by(scenario, percent_rangeloss_high, SCINAME) #many small ranged spp affected by aoc vulnA
 
-
-checkC %>% group_by(scenario, ori_range) %>% summarize(n=n())
 
 

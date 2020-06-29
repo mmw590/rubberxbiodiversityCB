@@ -13,11 +13,10 @@ stderr <- function(x, na.rm=FALSE) {
   sqrt(var(x)/length(x))
 }
 
-# 1. Combine all scen_df output ####
+# 1. Figure 3 - Scenarios Results ####
 # 1.1 Country-Restricted Output ####
 scen_dflist <- list.files('output/country_scenario/', full.names=TRUE)
 scen_dflist <- grep("countrysim_scen_df", scen_dflist, value=TRUE)
-#scen_dflist <- grep("test", scen_dflist, value=TRUE, invert=TRUE)
 scen_dflist
 scen_dflist <- lapply(scen_dflist[c(5,1:4)], fread)
 
@@ -28,14 +27,14 @@ scen_df_longC <- scen_df_longC %>% mutate(rangelossMha_mean_allspp=rangeloss_sum
 scen_df_longC <- scen_df_longC %>% mutate(pctrangeloss_mean_allspp=pctrangeloss_sum/4264) #Manually calculate the mean % range loss across all spp
 
 
-scen_df_longC <- scen_df_longC %>% mutate(scenario = rep(c('1-Production', '2-Conservation (all spp)','3a-Comp. Biodiv. (all spp)', '3b-Comp. Suit. (all spp)', '3c-Comp. Both (all spp)'), each=nrow(scen_dflist[[1]]) ), lost_area = lost_area*0.01, rangeloss_sum=rangeloss_sum*0.01) # lost_area in Mha
+scen_df_longC <- scen_df_longC %>% mutate(scenario = rep(c('1-Production', '2-Conservation','3a-Compromise Biodiversity', '3b-Compromise Suitability', '3c-Compromise Both'), each=nrow(scen_dflist[[1]]) ), lost_area = lost_area*0.01, rangeloss_sum=rangeloss_sum*0.01) # lost_area in Mha
 
 head(scen_df_longC) 
 table(scen_df_longC$scenario)
 
 
 # + Numbers for Results (country) ####
-# Comparing the average rubber suitability of converted land across the different scenarios for the country-restricted simulations, Scenario 2 (Conservation) only converted land with very low suitability (mean ± 1SE for first 7 Mha converted = 0.0063 ± 0.0006; Figure III.A). The conservation scenario is thus impractical for rubber expansion, with poor suitability leading to lower yields and higher land area demands to meet production targets. While not as high as the production scenario (0.629 ± 0.012), the average suitability of land converted in compromise scenarios were moderately high (3a = 0.487 ± 0.008; 3b = 0.484 ± 0.007; 3c = 0.487 ± 0.008; Figure III.A), suggesting higher acceptability to rubber producers.  
+# Comparing the average rubber bioclimatic suitability of converted land area across the different scenarios
 cumsuit1 <- scen_df_longC %>% group_by(scenario) %>% summarize(cumsuit.mean=mean(cumsuit), cumsuit.se=stderr(cumsuit))
 
 scen_df_longC %>% group_by(scenario) %>% summarize(rangeloss_mean=mean(rangeloss_sum, na.rm=TRUE), rangeloss_max=max(rangeloss_sum, na.rm=TRUE))
@@ -48,15 +47,15 @@ scen_dflist <- list.files('output/', full.names=TRUE)
 scen_dflist <- grep("scen_df", scen_dflist, value=TRUE)
 scen_dflist
 scen_dflist <- lapply(scen_dflist[c(5,1:4)], fread)
-scen_df_long <- rbindlist(scen_dflist)
 
+scen_df_long <- rbindlist(scen_dflist)
 
 scen_df_long <- scen_df_long %>% rename(lost_area = V1, rangeloss_sum=V2, pctrangeloss_sum=V3, nspplostrange=V4, nspplostrange0.10=V5, cumsuit=V6)
 scen_df_long <- scen_df_long %>% mutate(rangelossMha_mean_allspp=rangeloss_sum/4264*0.01) #Manually calculate the mean % range loss across all spp
 scen_df_long <- scen_df_long %>% mutate(pctrangeloss_mean_allspp=pctrangeloss_sum/4264) #Manually calculate the mean % range loss across all spp
 
 
-scen_df_long <- scen_df_long %>% mutate(scenario = rep(c('1-Production', '2-Conservation (all spp)','3a-Comp. Biodiv. (all spp)', '3b-Comp. Suit. (all spp)', '3c-Comp. Both (all spp)'), each=nrow(scen_dflist[[1]]) ), lost_area = lost_area*0.01, rangeloss_sum=rangeloss_sum*0.01) # lost_area in Mha
+scen_df_long <- scen_df_long %>% mutate(scenario = rep(c('1-Production', '2-Conservation','3a-Compromise Biodiversity', '3b-Compromise Suitability', '3c-Compromise Both'), each=nrow(scen_dflist[[1]]) ), lost_area = lost_area*0.01, rangeloss_sum=rangeloss_sum*0.01) # lost_area in Mha
 
 head(scen_df_long) 
 table(scen_df_long$scenario)
@@ -69,11 +68,16 @@ cumsuit2 <- scen_df_long %>% group_by(scenario) %>% summarize(cumsuit.mean=mean(
 scen_df_long %>% group_by(scenario) %>% summarize(rangeloss_mean=mean(rangeloss_sum, na.rm=TRUE), rangeloss_max=max(rangeloss_sum, na.rm=TRUE))
 scen_df_long %>% group_by(scenario) %>% summarize(pctrangeloss_mean=mean(pctrangeloss_sum, na.rm=TRUE), pctrangeloss_max=max(pctrangeloss_sum, na.rm=TRUE))
 
-# Average suitability of converted land was 6% and 17-19%% higher under Scenarios 1 and 3a-c in unrestricted simulations (Figure III.D). 
+# Average suitability of converted land in Scenarios 1 and 3a-c 
 (cumsuit2$cumsuit.mean-cumsuit1$cumsuit.mean)/cumsuit1$cumsuit.mean*100
-#6%, 0.6%, 19%, 17%, 19%
+
 
 # Relative to country-restricted simulations, unrestricted simulations led to small-moderate reductions in species impacts under Scenario 1 (Production), but did not change the trends for Scenario 2 (Conservation) (Figure 3BC, EF). 
+
+check <- scen_df_long %>% filter(lost_area %in% c(3.90)) %>% dplyr::select(lost_area, cumsuit, rangelossMha_mean_allspp, nspplostrange0.10, scenario)
+
+checkC <- scen_df_longC %>% filter(lost_area %in% c(3.90)) %>% dplyr::select(lost_area, cumsuit, rangelossMha_mean_allspp, nspplostrange0.10, scenario)
+
 checkC$cumsuit-check$cumsuit
 (checkC$rangelossMha_mean_allspp-check$rangelossMha_mean_allspp)
 (checkC$rangelossMha_mean_allspp-check$rangelossMha_mean_allspp)/checkC$rangelossMha_mean_allspp
@@ -81,27 +85,6 @@ checkC$cumsuit-check$cumsuit
 checkC$nspplostrange0.10; check$nspplostrange0.10
 (checkC$nspplostrange0.10-check$nspplostrange0.10)
 (checkC$nspplostrange0.10-check$nspplostrange0.10)/checkC$nspplostrange0.10
-
-# (not in paper)
-# For example, at 3.90 Mha expansion, unrestricted simulations reduced the cumulative mean range loss by 0.019Mha or 19% (Figure 3B, E) and the number of affected species from 43 to 74 (Figure 3E-F). 
-check <- scen_df_long %>% filter(lost_area %in% c(3.90)) %>% dplyr::select(lost_area, cumsuit, rangelossMha_mean_allspp, nspplostrange0.10, scenario)
-
-checkC <- scen_df_longC %>% filter(lost_area %in% c(3.90)) %>% dplyr::select(lost_area, cumsuit, rangelossMha_mean_allspp, nspplostrange0.10, scenario)
-
-
-# At 2.45 Mha expansion, unrestricted simulations reduced the cumulative mean range loss by 0.008 Mha / 8,000 ha or 13% (Figure 3B, E) and the number of affected species from 46 to 21 (Figure 3E-F). 
-check <- scen_df_long %>% filter(lost_area %in% c(2.45)) %>% dplyr::select(lost_area, cumsuit, rangelossMha_mean_allspp, nspplostrange0.10, scenario)
-
-checkC <- scen_df_longC %>% filter(lost_area %in% c(2.45)) %>% dplyr::select(lost_area, cumsuit, rangelossMha_mean_allspp, nspplostrange0.10, scenario)
-
-
-
-# However, once expansion exceeds ~6 Mha, the differences between country-restriction and unrestricted simulations diminish  
-check <- scen_df_long %>% filter(lost_area %in% c(3.90)) %>% dplyr::select(lost_area, cumsuit, rangelossMha_mean_allspp, nspplostrange0.10, scenario)
-
-checkC <- scen_df_longC %>% filter(lost_area %in% c(3.90)) %>% dplyr::select(lost_area, cumsuit, rangelossMha_mean_allspp, nspplostrange0.10, scenario)
-
-str(check)
 
 
 
@@ -120,7 +103,7 @@ scenfigC_cumsuit <- ggplot(data=scen_df_plotC, aes(x=lost_area, y=cumsuit,  grou
   geom_rect(data=rect1, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) +
   geom_rect(data=rect2, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE)  +  
   geom_line() +
-  scale_color_manual(values=c("blue", "red", "orange", "orange", "orange", "gray")) +
+  scale_color_manual(values=c("blue", "red", "purple", "purple", "purple", "gray")) +
   scale_linetype_manual(values=c(1,1,1,2,3,1)) +
   xlab('Rubber expansion (Mha)') + ylab('Average suitability of converted cells    ') +
   theme(legend.position="none") +
@@ -134,7 +117,7 @@ scenfigC <- ggplot(data=scen_df_plotC, aes(x=lost_area, y=rangeloss_sum,  group=
   geom_rect(data=rect1, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) +
   geom_rect(data=rect2, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) +  
   geom_line() +
-  scale_color_manual(values=c("blue", "red", "orange", "orange", "orange", "gray")) +
+  scale_color_manual(values=c("blue", "red", "purple", "purple", "purple", "gray")) +
   scale_linetype_manual(values=c(1,1,1,2,3,1)) +
   xlab('Rubber expansion (Mha)') + ylab('Cumulative forested range loss (Mha)  ') +
   theme(legend.position="none") +
@@ -147,7 +130,7 @@ scenfigC_affspp <- ggplot(data=scen_df_plotC, aes(x=lost_area, y=nspplostrange0.
   geom_rect(data=rect1, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) +
   geom_rect(data=rect2, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) + 
   geom_line() +
-  scale_color_manual(values=c("blue", "red", "orange", "orange", "orange", "gray")) +
+  scale_color_manual(values=c("blue", "red", "purple", "purple", "purple", "gray")) +
   scale_linetype_manual(values=c(1,1,1,2,3,1)) +
   xlab('Rubber expansion (Mha)') + ylab('No. of affected species') +
   theme(legend.position="none") +
@@ -167,7 +150,7 @@ scenfig_cumsuit <- ggplot(data=scen_df_plot, aes(x=lost_area, y=cumsuit,  group=
   geom_rect(data=rect1, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) +
   geom_rect(data=rect2, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) +
   geom_line() +
-  scale_color_manual(values=c("blue", "red", "orange", "orange", "orange", "gray")) +
+  scale_color_manual(values=c("blue", "red", "purple", "purple", "purple", "gray")) +
   scale_linetype_manual(values=c(1,1,1,2,3,1)) +
   xlab('Rubber expansion (Mha)') + ylab('Average suitability of converted cells    ') +
   theme(legend.position="none") +
@@ -179,7 +162,7 @@ scenfig <- ggplot(data=scen_df_plot, aes(x=lost_area, y=rangeloss_sum,  group=sc
   geom_rect(data=rect1, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) +
   geom_rect(data=rect2, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) +  
   geom_line() +
-  scale_color_manual(values=c("blue", "red", "orange", "orange", "orange", "gray")) +
+  scale_color_manual(values=c("blue", "red", "purple", "purple", "purple", "gray")) +
   scale_linetype_manual(values=c(1,1,1,2,3,1)) +
   xlab('Rubber expansion (Mha)') + ylab('Cumulative forested range loss (Mha)  ') +
   theme(legend.position="none") +
@@ -192,7 +175,7 @@ scenfig_affspp <- ggplot(data=scen_df_plot, aes(x=lost_area, y=nspplostrange0.10
   geom_rect(data=rect1, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) +
   geom_rect(data=rect2, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) + 
   geom_line() +
-  scale_color_manual(values=c("blue", "red", "orange", "orange", "orange", "gray")) +
+  scale_color_manual(values=c("blue", "red", "purple", "purple", "purple", "gray")) +
   scale_linetype_manual(values=c(1,1,1,2,3,1)) +
   xlab('Rubber expansion (Mha)') + ylab('No. of affected species') +
   theme(legend.position=c(0, 0.85), legend.title = element_blank(), legend.spacing=unit(0, 'mm'), legend.key.height = unit(0.1, 'cm'))+
@@ -201,14 +184,10 @@ scenfig_affspp <- ggplot(data=scen_df_plot, aes(x=lost_area, y=nspplostrange0.10
 
 
 #### comb fig (2x3) ####
-#scenfig_comb <- plot_grid(scenfig_cumsuit, scenfig, scenfig_affspp, scenfigC_cumsuit, scenfigC, scenfigC_affspp, ncol=3, labels = c('A', 'B', 'C', 'D', 'E', 'F'), label_size=8  )
-
 scenfig_comb <- plot_grid(scenfigC_cumsuit, scenfigC, scenfigC_affspp, scenfig_cumsuit, scenfig, scenfig_affspp,  ncol=3, labels = c('A', 'B', 'C', 'D', 'E', 'F'), label_size=8  )
 
-cowplot::save_plot("output/results/textS1_Fig3_A-F.png", scenfig_comb, base_width=6.85, base_height = 6.85/3*2, dpi=300)
+cowplot::save_plot("output/results/dataS1_fig3.png", scenfig_comb, base_width=6.85, base_height = 6.85/3*2, dpi=300)
 
-
-#less variation between the compromise scenarios because there's only 1.84 Mha AOC in levels 1-5 (scen3a-3b) or levels 1-3 (scen3c) - see Text S1 Table I
 
 
 
@@ -224,7 +203,6 @@ rm(suit_vuln_spp)
 # Load IUCN red list
 forspp_corr <- read.csv("data/forestdependentspecies_iucnredlist2019.csv")
 head(forspp_corr)
-#forspp_corr[duplicated(forspp_corr$SCINAME) | duplicated(forspp_corr$SCINAME, fromLast = TRUE), ]
 
 forspp_corr2 <- forspp_corr %>% distinct(SCINAME, category, class) 
 nrow(forspp_corr2) == n_distinct(forspp_corr$SCINAME) #check if TRUE
@@ -236,14 +214,13 @@ sppnames_iucn %>% group_by(category) %>% summarize(n=n())
 
 ### + Load spprangeloss tbls from simulations & merge with sppnames/iucn categories ####
 dflist <- list.files('output/country_scenario', full.names=TRUE)
-dflist <- grep('spprangelosstbl', dflist, value=TRUE)
-dflist <- grep('test', dflist, value=TRUE, invert=TRUE)
+dflist <- grep('spprangelosstbl_scen', dflist, value=TRUE)
 dflist
-dflist <- lapply(dflist[c(1,6:9)], fread)
+dflist <- lapply(dflist, fread)
 
 spprangeloss_dfC <- rbindlist(dflist)
 
-spprangeloss_dfC <- spprangeloss_dfC %>% mutate(scenario = rep(c('1-Production', '2-Conservation (all spp)','3a-Comp. Biodiv. (all spp)', '3b-Comp. Suit. (all spp)', '3c-Comp. Both (all spp)'), each=nrow(dflist[[1]]) )) 
+spprangeloss_dfC <- spprangeloss_dfC %>% mutate(scenario = rep(c('1-Production', '2-Conservation','3a-Compromise Biodiversity', '3b-Compromise Suitability', '3c-Compromise Both'), each=nrow(dflist[[1]]) )) 
 
 spprangeloss_dfC <- spprangeloss_dfC %>% mutate(percent_rangeloss_low = (1-(range_remaining_low/ori_range))*100, percent_rangeloss_high = (1-(range_remaining_high/ori_range))*100,
                                                 percent_rangeloss_6.70 = (1-(range_remaining_high_EWT/ori_range))*100)
@@ -258,8 +235,6 @@ spprangeloss_dfC$iucn_category <- fct_relevel(spprangeloss_dfC$iucn_category, "C
 
 ### + Numbers for Results ####
 head(spprangeloss_dfC)
-
-#Taking a snapshot of species impacts for the country-restricted simulations at 3.90 Mha expansion (upper bound of industry projections), 74 species (28 amphibians, 26 birds, 20 mammals) would lose ≥10% of their forested range under Scenario 1 (Production), of which six species would lose ≥50% of their forested range (Figure 4). No species were affected under Scenario 2 (Conservation). Scenarios 3a-c (Compromise) would dramtically cut down the number of affected species to 11, none of which would lose ≥50% of their forested range (Figure 4). 
 
 (spprangeloss_sum_10 <- spprangeloss_dfC %>% group_by(scenario) %>% 
     summarize(naffspp10_low=sum(percent_rangeloss_low>=10), naffspp10_high=sum(percent_rangeloss_high>=10)) )
@@ -282,10 +257,9 @@ head(spprangeloss_dfC)
 unique(spprangeloss_df$scenario)
 
 hist_spprangeloss_df_0_highC <- spprangeloss_dfC %>% filter(percent_rangeloss_high>=10)  %>% 
-  mutate(rangeloss.class = cut(percent_rangeloss_high, breaks=seq(10,105,5),include.lowest = TRUE, right = FALSE, labels=c(seq(10.1,100.1,5)) ) , orirange.class=cut(ori_range, breaks=c(0,10,100,1000,10000,100000), labels=c("0-0.1 Mha", "0.1-1 Mha", "1-10 Mha", "10-100 Mha", "100-1000 Mha")) ) %>% filter(scenario %in% c("1-Production", "3a-Comp. Biodiv. (all spp)"))
+  mutate(rangeloss.class = cut(percent_rangeloss_high, breaks=seq(10,105,5),include.lowest = TRUE, right = FALSE, labels=c(seq(10.1,100.1,5)) ) , orirange.class=cut(ori_range, breaks=c(0,10,100,1000,10000,100000), labels=c("0-0.1 Mha", "0.1-1 Mha", "1-10 Mha", "10-100 Mha", "100-1000 Mha")) ) %>% filter(scenario %in% c("1-Production", "3a-Compromise Biodiversity"))
 
 hist_spprangeloss_df_0_highC$rangeloss.class <- as.numeric(as.character(hist_spprangeloss_df_0_highC$rangeloss.class))
-hist_spprangeloss_df_0_highC$scenario <- recode(hist_spprangeloss_df_0_highC$scenario, "1-Production" = "A     1-Production", "3a-Compromise Biodiversity" = "D     3-Compromise") #change the scenario label for each histogram
 
 head(hist_spprangeloss_df_0_highC)
 
@@ -339,20 +313,14 @@ scen_histC <- plot_grid( hist_rangeloss_scen_high, hist_rangeloss_scen_tax_high,
 ### plot labels 
 scen_histC_labs <- scen_histC + draw_plot_label(c("A", "B", "C", "D", "E","F"), x=rep(c(0.03,0.34,0.67),2), y=rep(c(1,0.55),each=3), fontface="bold", size=10)
 
-cowplot::save_plot("output/results/textS1_fig4.png", scen_histC_labs, base_width=6.85, base_height = 4, dpi=300)
+cowplot::save_plot("output/results/dataS1_fig4.png", scen_histC_labs, base_width=6.85, base_height = 4, dpi=300)
 
 
 
 
 
-###### specific spp that get hammered ####
-check <- spprangeloss_dfC %>%  filter(percent_rangeloss_high>=50) %>% group_by(scenario, percent_rangeloss_high, SCINAME) #many small ranged spp affected by aoc vulnA
-check$SCINAME
-#1] "Amnirana fonensis"     "Amnirana occidentalis" "Crocidura nimbae"      "Crocidura zaphiri"    
-#[5] "Hipposideros marisae"  "Rhinolophus ziama"   
+#### + specific spp that get hammered ####
+checkC <- spprangeloss_dfC %>%  filter(percent_rangeloss_high>=50) %>% group_by(scenario, percent_rangeloss_high, SCINAME) #many small ranged spp affected by aoc vulnA
 
-dput(unique(spprangeloss_df_0$rangeloss.class))
-
-check %>% group_by(scenario, ori_range) %>% summarize(n=n())
 
 

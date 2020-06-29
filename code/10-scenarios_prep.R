@@ -4,7 +4,8 @@
 rm(list=ls())
 GISfolder <- 'C:/Users/bop17mw/Desktop/GIS_Files/'
 
-library(tidyverse)
+library(dplyr)
+library(tidyr)
 library(raster)
 library(fasterize)
 library(sf)
@@ -82,17 +83,11 @@ table(suit_vuln_vals3$comprom.vulnA.1, suit_vuln_vals3$comprom.vulnA.3)
 # Using manual averaging will retain missing data in avg.suit.acc, avg.vuln.carb
 suit_vuln_vals3 <- suit_vuln_vals3 %>% 
   mutate(suit.inv=1-suit, 
-         #acc = rescale(acc, to=c(0, 1)), 
-         #carb = rescale(carb, to=c(0, 1)), #5775 NAs in carb...
          avg.suit.acc = (suit.inv+acc)/2,
          avg.vulnA.carb = (vulnA+carb)/2,
          avg.vulnT.carb = (vulnT+carb)/2,
-         #avg.suit.vulnA = (suit.inv+vulnA)/2,
          optim4.vulnA = (suit.inv+vulnA+acc+carb)/4,
-         optim4.vulnT = (suit.inv+vulnT+acc+carb)/4,
-         op.rs=op/100  )
-
-range(suit_vuln_vals3$op.rs, na.rm=TRUE) #there is a neg OP suit value...just ignore for now
+         optim4.vulnT = (suit.inv+vulnT+acc+carb)/4)
 
 # checking NAs
 colSums(is.na(suit_vuln_vals3)) #correct!
@@ -133,7 +128,7 @@ head(suit_vuln_vals3)
 spdf_afr <- suit_vuln_vals3 %>% filter(region=='afr') %>% dplyr::select(x,y)
 spdf_ssea <- suit_vuln_vals3 %>% filter(region=='ssea') %>% dplyr::select(x,y)
 
-mat_vuln_afr <- raster('output/afr/biodiversity_rasters_cci/rescaled_twice_afr_combspp_vuln_all_std_mask.tif')
+mat_vuln_afr <- raster('output/afr/biodiversity_rasters/rescaled_twice_afr_combspp_vuln_all_std_mask.tif')
 mat_vuln_ssea <- raster('output/ssea/biodiversity_rasters/rescaled_twice_ssea_combspp_vuln_all_std_mask.tif')
 
 #plot(spdf_afr)
@@ -271,7 +266,6 @@ output <- raster(crs=crs(mat_vuln_afr), ext=extent(mat_vuln_afr) , resolution=re
 
 # Afr (amph)
 system.time(
-  # for(i in 1:50){
   for(i in 1:length(localforestamph_afr)){
     geom <- layers_aea_afr[layers_aea_afr$binomial == localforestamph_afr[i], c('binomial', 'presence_richness')] 
     out <- fasterize(st_collection_extract(geom, "POLYGON"), output, field='presence_richness', background=0)
@@ -302,7 +296,6 @@ list_spp_presence_ssea <- list()
 output <- raster(crs=crs(mat_vuln_ssea), ext=extent(mat_vuln_ssea) , resolution=res(mat_vuln_ssea))
 
 system.time(
-#  for(i in 1:50){
     for(i in 1:length(localforestamph_ssea)){
     geom <- layers_aea_ssea[layers_aea_ssea$binomial == localforestamph_ssea[i], c('binomial', 'presence_richness')] 
     out <- fasterize(st_collection_extract(geom, "POLYGON"), output, field='presence_richness', background=0)
@@ -335,10 +328,9 @@ suit_vuln_amph <- left_join(suit_vuln_amph, suit_vuln_amph_afr, by=c("x", "y"))
 suit_vuln_amph <- left_join(suit_vuln_amph, suit_vuln_amph_ssea, by=c("x", "y"))
 
 str(suit_vuln_amph)
-all(colSums( suit_vuln_amph[4:ncol(suit_vuln_amph)]>0 , na.rm=TRUE) > 0 ) #TRUE
+all(colSums( suit_vuln_amph[, 4:ncol(suit_vuln_amph)]>0 , na.rm=TRUE) > 0 ) #TRUE
 
-#fwrite(suit_vuln_amph, 'output/results/checking/suit_vuln_spprangeloss_amph.csv') #208253 #old file location
-fwrite(suit_vuln_amph, 'output/temp/suit_vuln_scenario_amph.csv') #208253
+fwrite(suit_vuln_amph, 'output/temp/suit_vuln_scenario_amph.csv') #208253 obs
 
 
 
@@ -467,7 +459,6 @@ output <- raster(crs=crs(mat_vuln_ssea), ext=extent(mat_vuln_ssea) , resolution=
 
 head(layers_aea_ssea)
 system.time(
-  # for(i in 1:50){
   for(i in 1:length(localforestbird_ssea)){
     geom <- layers_aea_ssea[layers_aea_ssea$SCINAME == localforestbird_ssea[i], c('SCINAME', 'presence_richness')] 
     
@@ -478,8 +469,6 @@ system.time(
   }
 )
 #8.19s to put rasters in a list, only objects in memory were:
-# rm(list=setdiff(ls(), c("suit_vuln_vals3", "spdf_afr", "spdf_ssea", "mat_vuln_afr", "mat_vuln_ssea"))) & forestbird_afr, forestbird_ssea, layers_aea_afr, layers_aea_ssea
-#rm(output,geom,out)
 
 stack_spp_presence <- stack(list_spp_presence)
 ext <- raster::extract(stack_spp_presence, spdf_ssea)
@@ -500,7 +489,6 @@ list_spp_presence <- list()
 output <- raster(crs=crs(mat_vuln_afr), ext=extent(mat_vuln_afr) , resolution=res(mat_vuln_afr))
 
 system.time(
-  # for(i in 1:50){
   for(i in 1:length(localforestbird_afr)){
     geom <- layers_aea_afr[layers_aea_afr$SCINAME == localforestbird_afr[i], c('SCINAME', 'presence_richness')] 
     
@@ -511,7 +499,6 @@ system.time(
   }
 )
 # 3s to put rasters in a list with the rm(geom,out)
-# 4.25s to put rasters in a list without rm(geom,out)
 
 stack_spp_presence <- stack(list_spp_presence)
 ext <- raster::extract(stack_spp_presence, spdf_afr)
@@ -531,7 +518,7 @@ suit_vuln_bird <- left_join(suit_vuln_bird, suit_vuln_bird_afr, by=c('x', 'y'))
 suit_vuln_bird <- left_join(suit_vuln_bird, suit_vuln_bird_ssea, by=c('x', 'y'))
 
 head(names(suit_vuln_bird), 50)
-all(colSums( suit_vuln_bird[5:ncol(suit_vuln_bird)]>0 , na.rm=TRUE) > 0 ) #TRUE
+all(colSums( suit_vuln_bird[, 5:ncol(suit_vuln_bird)]>0 , na.rm=TRUE) > 0 ) #TRUE
 
 fwrite(suit_vuln_bird, 'output/temp/suit_vuln_scenario_bird.csv')
 
@@ -611,12 +598,8 @@ localforestmammal_ssea <- as.character(sort(unique(spponlyinssea$binomial))) #47
 
 #### +loop for joining species to suit_vuln ####
 
-#note: need to clear memory before running. split into afr and ssea to reduce chance of R error (cannot allocate vector).
 rm(layers, sppnotonlyinafr, sppnotonlyinssea, spponlyinafr1, spponlyinssea1, spptoremove)
 gc()
-
-#suit_vuln_mammal_afr <- suit_vuln_vals3 #%>% filter(comprom>0) #to only run analysis for AOC cells (save time now), or for all available cells for expansion (potentially save time later?)
-#rm(suit_vuln_mammal, suit_vuln_mammal_afr)
 
 # Run loop separately for afr and ssea coz i want to raster stack them later
 list_spp_presence <- list()
@@ -669,7 +652,7 @@ names(suit_vuln_mammal_ssea) <- c('x', 'y', localforestmammal_ssea)
 # Subset only spp columns where it is present in our non-NA study area.... 
 onlyGoodcolumns_idx  <- colSums(suit_vuln_mammal_ssea>0 , na.rm=TRUE) > 0 #DOES THE COLUMN HAVE POSITIVE VALUES? IF YES, KEEP (TRUE)
 suit_vuln_mammal_ssea <- suit_vuln_mammal_ssea[, c(rep(TRUE, 2), onlyGoodcolumns_idx[3:length(onlyGoodcolumns_idx)])] #441
-all(colSums( suit_vuln_mammal_ssea[3:ncol(suit_vuln_mammal_ssea)]>0 , na.rm=TRUE) > 0 ) 
+all(colSums( suit_vuln_mammal_ssea[3:ncol(suit_vuln_mammal_ssea)]>0 , na.rm=TRUE) > 0 ) #TRUE
 
 rm(list_spp_presence, stack_spp_presence, ext)
 
@@ -680,7 +663,7 @@ suit_vuln_mammal <- left_join(suit_vuln_mammal, suit_vuln_mammal_afr, by=c("x", 
 suit_vuln_mammal <- left_join(suit_vuln_mammal, suit_vuln_mammal_ssea, by=c("x", "y"))
 
 str(suit_vuln_mammal)
-all(colSums( suit_vuln_mammal[4:ncol(suit_vuln_mammal)]>0 , na.rm=TRUE) > 0 ) #TRUE
+all(colSums( suit_vuln_mammal[, 5:ncol(suit_vuln_mammal)]>0 , na.rm=TRUE) > 0 ) #TRUE
 
 fwrite(suit_vuln_mammal, 'output/temp/suit_vuln_scenario_mammal.csv')
 
@@ -767,9 +750,9 @@ sppwithforestedrange.names = names(sppwithforestedrange)
 suit_vuln_spp <- fread('output/temp/suit_vuln_scenario_combspp_incldsppwithnoforestcells.csv')
 suit_vuln_spp <- suit_vuln_spp[ , ..sppwithforestedrange.names] #filter only spp columns with >0 forested cells in their range (data.table indexing)
 
-suit_vuln_spp
-
 fwrite(suit_vuln_spp, 'output/suit_vuln_scenario_combspp.csv') 
+
+# Ok to delete files in output/temp/ now, as they are huge files
 
 
 # # Make small vers of dataset for testing 
@@ -807,4 +790,303 @@ ewt2024_highest <- rubberArea_milha_2010+8.864975-rubberArea_milha_2017 #
 
 #These numbers will be used to quantify species impacts at several stages of conversion in the scenarios
 
-length(unique(colnames(suit_vuln_vals3)))
+
+
+
+######### Example code for running scenario simulations directly in R #####
+rm(list=ls())
+gc()
+
+# source('code/13.0-unrestricted_scenarios_fxn.R') # different wd, can't directly source unless you change the directories there
+
+# Written for use in HPC, adapt as required for your HPC system
+
+## Description of variables:
+# vals_mod is a data.matrix/table/frame with 3 columns: suit, forest, and the criteria variable scenario is based on. each row represents a cell in the grid.
+# vals_spp is a data.matrix/table/frame with as many columns as there are species, and each row indicates presence/absence of that species in the cell
+# spp_ranges is a vector of  the original range of all spp (colsums(vals_spp), or sums of 1s)
+# ranges_ = range remaining after each (forested) cell is converted
+# nrows is number of cells to convert. I set the default to 700 cells = 7 Mha
+# res is lost area (no. of cells converted), sum of forested range lost (1cell=100km2=10,000ha=0.01Mha), sum of % range loss, no. of spp lost any amount of range, no. of spp lost >=10% of range, average suitability of converted cells 
+
+
+##### Function for converting based on a single criterion
+scen_results <- function(vals_mod, vals_spp, spp_ranges, nrows=700){
+  vals_spp = cbind(vals_mod, sample.int(nrow(vals_mod)), vals_spp) #cbind scenario vals, random numbe column, spp distrb
+  
+  vals_spp = vals_spp[order(vals_spp[, 3], vals_spp[, 4]), ] #sort by scenario values then random
+  
+  vals_mod = vals_spp[ , 1:2] #extract first column which is suitability, to calc avg suit in res. extract 2nd column which is forest
+  
+  vals_spp = vals_spp[ , 5:(ncol(vals_spp)) ] #select only columns of sppnames, rows are sorted by conversion order. 
+  
+  # Initialize objects for the loop
+  ranges_ = spp_ranges #initial forested ranges_ before subtracting
+  lost_area = 0
+  res = res_0
+  
+  #for every cell converted (row i) in first 10K, find spp which occurs in that cell (non-NA), then minus 1 cell from that species' original range
+  for (i in 1:nrows){
+    spp_which_occur = which(is.na(vals_spp[i,])==FALSE & vals_spp[i,]>0 & vals_mod[i,2]==1) # & if spp occur in cell i and cell i is forested
+    ranges_[spp_which_occur] = ranges_[spp_which_occur]-1 #remove 1 from the range of spp that occur in this cell(row)
+    lost_area = lost_area + 1
+    
+    #record the info for every 10 cells
+    if(i%%10 == 0){
+      res=rbind(res, c(lost_area, sum(spp_ranges-ranges_), sum(1-(ranges_/spp_ranges)), sum(ranges_/spp_ranges < 1), sum(ranges_/spp_ranges <= 0.9), sum(vals_mod[1:i])/i ) )  
+    }
+    
+    #this code is for Expected range loss under the different scenarios for all forest dependent species, at different amounts of rubber expansion (EWT-2024, Industry-2027)
+    
+    if(i==245){
+      spp_ranges_remaining_low = ranges_
+      res=rbind(res, c(lost_area, sum(spp_ranges-ranges_), sum(1-(ranges_/spp_ranges)), sum(ranges_/spp_ranges < 1), sum(ranges_/spp_ranges < 0.9), sum(vals_mod[1:i])/i ) ) 
+    }
+    
+    if(i==390){
+      spp_ranges_remaining_high = ranges_
+      # res=rbind(res, c(lost_area, sum(spp_ranges-ranges_), sum(1-(ranges_/spp_ranges)), sum(ranges_/spp_ranges < 1), sum(ranges_/spp_ranges < 0.9), sum(vals_mod[1:i])/i ) ) # Omit this line if demand is multiple of 10, res would already be recorded
+    }
+    
+    if(i==166){
+      spp_ranges_remaining_low_EWT = ranges_
+      res=rbind(res, c(lost_area, sum(spp_ranges-ranges_), sum(1-(ranges_/spp_ranges)), sum(ranges_/spp_ranges < 1), sum(ranges_/spp_ranges < 0.9), sum(vals_mod[1:i])/i ) ) 
+    }
+    
+    if(i==670){
+      spp_ranges_remaining_high_EWT = ranges_
+      #  res=rbind(res, c(lost_area, sum(spp_ranges-ranges_), sum(1-(ranges_/spp_ranges)), sum(ranges_/spp_ranges < 1), sum(ranges_/spp_ranges < 0.9), sum(vals_mod[1:i])/i ) ) # Omit this line if demand is multiple of 10, res would already be recorded
+    }
+    
+    #rm(spp_which_occur)
+    
+  }
+  output <- list(res, spp_ranges_remaining_low, spp_ranges_remaining_high, spp_ranges_remaining_low_EWT, spp_ranges_remaining_high_EWT)
+  return(output) #output
+}
+
+
+
+
+
+#### Function for 2 criteria to convert on
+# inputs same as above but
+# vals_mod is a data.matrix/table/frame with 4 columns: suit, forest, and the two criteria variables the scenario is based on. each row represents a cell in the grid.
+
+scen_results_nvar2 <- function(vals_mod, vals_spp, spp_ranges, nrows=700){
+  vals_spp = cbind(vals_mod, sample.int(nrow(vals_mod)), vals_spp) #cbind scenario vals, random numbe column, spp distrb
+  
+  vals_spp = vals_spp[order(vals_spp[, 3], vals_spp[, 4],  vals_spp[, 5]), ] #sort by scenario values then random
+  
+  vals_mod = vals_spp[ , 1:2] #extract first column which is suitability, to calc avg suit in res. extract 2nd column which is forest
+  
+  vals_spp = vals_spp[ , 6:(ncol(vals_spp)) ] #select only columns of sppnames, rows are sorted by conversion order. 
+  
+  # Initialize objects for the loop
+  ranges_ = spp_ranges #initial forested ranges_ before subtracting
+  lost_area = 0
+  res = res_0
+  
+  #for every cell converted (row i) in first 10K, find spp which occurs in that cell (non-NA), then minus 1 cell from that species' original range
+  for (i in 1:nrows){
+    
+    spp_which_occur = which(is.na(vals_spp[i,])==FALSE & vals_spp[i,]>0 & vals_mod[i,2]==1) # & if spp occur in cell i and cell i is forested
+    ranges_[spp_which_occur] = ranges_[spp_which_occur]-1 #remove 1 from the range of spp that occur in this cell(row)
+    lost_area = lost_area + 1
+    
+    #record the info for every 10 cells
+    if(i%%10 == 0){
+      res=rbind(res, c(lost_area, sum(spp_ranges-ranges_), sum(1-(ranges_/spp_ranges)), sum(ranges_/spp_ranges < 1), sum(ranges_/spp_ranges < 0.9), sum(vals_mod[1:i])/i ) )
+    }
+    
+    #this code is for Expected range loss under the different scenarios for all forest dependent species, at different amounts of rubber expansion (EWT-2024, Industry-2027)
+    
+    if(i==245){
+      spp_ranges_remaining_low = ranges_
+      res=rbind(res, c(lost_area, sum(spp_ranges-ranges_), sum(1-(ranges_/spp_ranges)), sum(ranges_/spp_ranges < 1), sum(ranges_/spp_ranges < 0.9), sum(vals_mod[1:i])/i ) ) 
+    }
+    
+    if(i==390){
+      spp_ranges_remaining_high = ranges_
+      # res=rbind(res, c(lost_area, sum(spp_ranges-ranges_), sum(1-(ranges_/spp_ranges)), sum(ranges_/spp_ranges < 1), sum(ranges_/spp_ranges < 0.9), sum(vals_mod[1:i])/i ) ) # Omit this line if demand is multiple of 10, res would already be recorded
+    }
+    
+    if(i==166){
+      spp_ranges_remaining_low_EWT = ranges_
+      res=rbind(res, c(lost_area, sum(spp_ranges-ranges_), sum(1-(ranges_/spp_ranges)), sum(ranges_/spp_ranges < 1), sum(ranges_/spp_ranges < 0.9), sum(vals_mod[1:i])/i ) ) 
+    }
+    
+    if(i==670){
+      spp_ranges_remaining_high_EWT = ranges_
+      #  res=rbind(res, c(lost_area, sum(spp_ranges-ranges_), sum(1-(ranges_/spp_ranges)), sum(ranges_/spp_ranges < 1), sum(ranges_/spp_ranges < 0.9), sum(vals_mod[1:i])/i ) ) # Omit this line if demand is multiple of 10, res would already be recorded
+    }
+    
+    #rm(spp_which_occur)
+    
+  }
+  output <- list(res, spp_ranges_remaining_low, spp_ranges_remaining_high, spp_ranges_remaining_low_EWT, spp_ranges_remaining_high_EWT)
+  return(output) #output
+}
+
+
+
+
+###### This section is for loading libraries/data/parameters used in all scenarios simulations ##### 
+
+#### Load libraries ####
+library(dplyr)
+library(data.table)
+library(parallel)
+
+#### Load data ####
+
+# Spp matrix
+scen_spp <- fread('output/suit_vuln_scenario_combspp.csv') #on PC
+scen_spp <- data.matrix(scen_spp) #6.1Gb if replace NAs with 0s/3Gb if not
+
+# suit vuln vals
+suit_vuln_vals3 <- fread('output/suit_vuln_vals3_scenario.csv') #on PC
+suit_vuln_vals3 <- suit_vuln_vals3[order(cell.id, x, y, region)]
+
+# spp_ranges, res_0
+spp_ranges = colSums(suit_vuln_vals3$forest>0 & scen_spp, na.rm=TRUE)
+res_0 = matrix(c(0,0,0,0,0,0), nrow=1)
+
+
+####### Scenario 1 (example for 1 rep) #####
+
+#### Extract needed columns for simulation 
+scen_in <- suit_vuln_vals3[ , .(suit, forest, avg.suit.acc)]
+scen_in <- data.matrix(scen_in) #2.9mb as matrix
+
+
+##### + Start conversion simulation #####
+system.time(scen_suit_rep <- scen_results(vals_mod=scen_in, vals_spp=scen_spp, spp_ranges=spp_ranges) ) #10s for single rep, 1.5mb output
+
+scen_df <- scen_suit_rep[[1]]
+scen_df
+fwrite(scen_df, 'output/scen_df1_test.csv') #country simulation results
+
+spprangeloss_df <- data.frame( 
+  ori_range=spp_ranges, 
+  range_remaining_low=scen_suit_rep[[2]],
+  range_remaining_high=scen_suit_rep[[3]],
+  range_remaining_low_EWT=scen_suit_rep[[4]],
+  range_remaining_high_EWT=scen_suit_rep[[5]])
+
+head(spprangeloss_df)
+
+fwrite(spprangeloss_df, 'output/spprangelosstbl_scen1_test.csv')
+
+
+####### Scenario 2 (example for 1 rep) #####
+
+#### Extract needed columns for simulation 
+scen_in <- suit_vuln_vals3[ , .(suit, forest, avg.vulnT.carb)]
+scen_in <- data.matrix(scen_in) 
+
+
+##### + Start conversion simulation #####
+system.time(scen_suit_rep <- scen_results(vals_mod=scen_in, vals_spp=scen_spp, spp_ranges=spp_ranges) ) 
+
+scen_df <- scen_suit_rep[[1]]
+scen_df
+fwrite(scen_df, 'output/scen_df2_test.csv') #country simulation results
+
+spprangeloss_df <- data.frame( 
+  ori_range=spp_ranges, 
+  range_remaining_low=scen_suit_rep[[2]],
+  range_remaining_high=scen_suit_rep[[3]],
+  range_remaining_low_EWT=scen_suit_rep[[4]],
+  range_remaining_high_EWT=scen_suit_rep[[5]])
+
+head(spprangeloss_df)
+
+fwrite(spprangeloss_df, 'output/spprangelosstbl_scen2_test.csv')
+
+
+
+
+
+##### Scenario 3a (example for sorting on 2 criteria; 1 rep) #######
+
+#### Extract needed columns for simulation 
+scen_in <- suit_vuln_vals3[ , .(suit, forest, comprom.vulnT.1, optim4.vulnT)]
+scen_in <- data.matrix(scen_in) 
+
+
+##### + Start conversion simulation #####
+system.time(scen_suit_rep <- scen_results_nvar2(vals_mod=scen_in, vals_spp=scen_spp, spp_ranges=spp_ranges)) 
+
+scen_df <- scen_suit_rep[[1]]
+scen_df
+fwrite(scen_df, 'output/scen_df3a_test.csv') #country simulation results
+
+
+spprangeloss_df <- data.frame( 
+  ori_range=spp_ranges, 
+  range_remaining_low=scen_suit_rep[[2]],
+  range_remaining_high=scen_suit_rep[[3]],
+  range_remaining_low_EWT=scen_suit_rep[[4]],
+  range_remaining_high_EWT=scen_suit_rep[[5]])
+
+head(spprangeloss_df)
+
+fwrite(spprangeloss_df, 'output/spprangelosstbl_scen3a_test.csv')
+
+
+
+##### Scenario 3b (example for sorting on 2 criteria; 1 rep) #######
+
+#### Extract needed columns for simulation 
+scen_in <- suit_vuln_vals3[ , .(suit, forest, comprom.vulnT.2, optim4.vulnT)]
+scen_in <- data.matrix(scen_in) 
+
+
+##### + Start conversion simulation #####
+system.time(scen_suit_rep <- scen_results_nvar2(vals_mod=scen_in, vals_spp=scen_spp, spp_ranges=spp_ranges)) 
+
+scen_df <- scen_suit_rep[[1]]
+scen_df
+fwrite(scen_df, 'output/scen_df3b_test.csv') #country simulation results
+
+
+spprangeloss_df <- data.frame( 
+  ori_range=spp_ranges, 
+  range_remaining_low=scen_suit_rep[[2]],
+  range_remaining_high=scen_suit_rep[[3]],
+  range_remaining_low_EWT=scen_suit_rep[[4]],
+  range_remaining_high_EWT=scen_suit_rep[[5]])
+
+head(spprangeloss_df)
+
+fwrite(spprangeloss_df, 'output/spprangelosstbl_scen3b_test.csv')
+
+
+
+##### Scenario 3c (example for sorting on 2 criteria; 1 rep) #######
+
+#### Extract needed columns for simulation 
+scen_in <- suit_vuln_vals3[ , .(suit, forest, comprom.vulnT.3, optim4.vulnT)]
+scen_in <- data.matrix(scen_in) 
+
+
+##### + Start conversion simulation #####
+system.time(scen_suit_rep <- scen_results_nvar2(vals_mod=scen_in, vals_spp=scen_spp, spp_ranges=spp_ranges))
+
+scen_df <- scen_suit_rep[[1]]
+scen_df
+fwrite(scen_df, 'output/scen_df3c_test.csv') #country simulation results
+
+
+spprangeloss_df <- data.frame( 
+  ori_range=spp_ranges, 
+  range_remaining_low=scen_suit_rep[[2]],
+  range_remaining_high=scen_suit_rep[[3]],
+  range_remaining_low_EWT=scen_suit_rep[[4]],
+  range_remaining_high_EWT=scen_suit_rep[[5]])
+
+head(spprangeloss_df)
+
+fwrite(spprangeloss_df, 'output/spprangelosstbl_scen3c_test.csv')
+

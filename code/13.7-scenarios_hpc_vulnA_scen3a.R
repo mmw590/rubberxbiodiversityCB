@@ -18,7 +18,7 @@ setwd('/data/bop17mw/rubberxbiodiversity/')
 
 
 # Load function
-source('21.6-scenarios_fxn.R')
+source('code/13.0-unrestricted_scenarios_fxn.R')
 
 
 # Scenario 3a: Compromise (Compromising biodiversity prioritise production), averaged suit, vuln (vulnA), acc and carbon (optim4). ####

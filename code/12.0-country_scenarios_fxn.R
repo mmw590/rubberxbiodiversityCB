@@ -161,7 +161,7 @@ library(parallel)
 
 
 #### Set wd ####
-setwd('/data/bop17mw/rubberxbiodiversity/')
+#setwd('/data/bop17mw/rubberxbiodiversity/')
 #setwd("C:/Users/bop17mw/Google Drive/1-Uni-of-Sheffield/1-PhD/Ch1-CultivationVsConservation/rubberxbiodiversity") #on PC
 
 

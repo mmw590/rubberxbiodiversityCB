@@ -16,7 +16,7 @@ input <- raster(paste0(GISfolder, 'Rubber Suitability/RubberSuit.tif'))
 input <- raster(paste0(GISfolder, 'HCS/Avitabile_AGB_Map/Avitabile_AGB_Map.tif'))
 input <- raster(paste0(GISfolder, 'accessibility/accessibility_to_cities_2015_v1.0/accessibility_to_cities_2015_v1.0.tif'))
 input <- raster(paste0(GISfolder, "WDPA/WDPA_July2018/WDPA_July2018_combraster.tif")) 
-# This tif file is not directly downloadable from WDPA, as I processed the shapefiles in ArcGIS, but I have provided my processing steps below, and can also share this tif file upon request.
+# This tif file is not directly downloadable from WDPA, as I processed the shapefiles in ArcGIS, but I have provided my processing steps below, and can also share this tif file privately upon request.
 # Methods, as written in the article: Protected areas (georeferenced polygons and points) were downloaded from the World Database on Protected Areas (WDPA) [38]. We first converted the point data in ArcMap ver. 10.4.1 by applying a geodesic buffer corresponding to the reported size of the protected area, as recommended in the WDPA User Manual [45]. We excluded points with reported areas of zero. We combined and rasterized the polygon and buffered point data, and projected it onto the 100 km2 reference grid. 
 
 reclassify.df <- read.csv('data/mat_land_use_reclassifyMW.csv')
