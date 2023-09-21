@@ -7,6 +7,7 @@ library(cowplot)
 library(ggplot2)
 library(data.table)
 library(forcats) #for fct_relevel
+library(viridis)
 
 stderr <- function(x, na.rm=FALSE) {
   if (na.rm) x <- na.omit(x)
@@ -18,7 +19,7 @@ stderr <- function(x, na.rm=FALSE) {
 scen_dflist <- list.files('output/country_scenario/', full.names=TRUE)
 scen_dflist <- grep("countrysim_scen_df", scen_dflist, value=TRUE)
 scen_dflist
-scen_dflist <- lapply(scen_dflist[c(5,1:4)], fread)
+scen_dflist <- lapply(scen_dflist[c(5,1:4)], fread) #be careful to select the vulnA data
 
 scen_df_longC <- rbindlist(scen_dflist)
 
@@ -46,7 +47,7 @@ scen_df_longC %>% group_by(scenario) %>% summarize(pctrangeloss_mean=mean(pctran
 scen_dflist <- list.files('output/', full.names=TRUE)
 scen_dflist <- grep("scen_df", scen_dflist, value=TRUE)
 scen_dflist
-scen_dflist <- lapply(scen_dflist[c(5,1:4)], fread)
+scen_dflist <- lapply(scen_dflist[c(5,1:4)], fread) #be careful to select only vulnA
 
 scen_df_long <- rbindlist(scen_dflist)
 
@@ -103,7 +104,7 @@ scenfigC_cumsuit <- ggplot(data=scen_df_plotC, aes(x=lost_area, y=cumsuit,  grou
   geom_rect(data=rect1, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) +
   geom_rect(data=rect2, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE)  +  
   geom_line() +
-  scale_color_manual(values=c("blue", "red", "purple", "purple", "purple", "gray")) +
+  scale_color_manual(values=c(viridis(3)[1], viridis(3)[3], viridis(3)[2],viridis(3)[2],viridis(3)[2],"gray")) +
   scale_linetype_manual(values=c(1,1,1,2,3,1)) +
   xlab('Rubber expansion (Mha)') + ylab('Average suitability of converted cells    ') +
   theme(legend.position="none") +
@@ -117,7 +118,7 @@ scenfigC <- ggplot(data=scen_df_plotC, aes(x=lost_area, y=rangeloss_sum,  group=
   geom_rect(data=rect1, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) +
   geom_rect(data=rect2, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) +  
   geom_line() +
-  scale_color_manual(values=c("blue", "red", "purple", "purple", "purple", "gray")) +
+  scale_color_manual(values=c(viridis(3)[1], viridis(3)[3], viridis(3)[2],viridis(3)[2],viridis(3)[2],"gray")) +
   scale_linetype_manual(values=c(1,1,1,2,3,1)) +
   xlab('Rubber expansion (Mha)') + ylab('Cumulative forested range loss (Mha)  ') +
   theme(legend.position="none") +
@@ -130,7 +131,7 @@ scenfigC_affspp <- ggplot(data=scen_df_plotC, aes(x=lost_area, y=nspplostrange0.
   geom_rect(data=rect1, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) +
   geom_rect(data=rect2, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) + 
   geom_line() +
-  scale_color_manual(values=c("blue", "red", "purple", "purple", "purple", "gray")) +
+  scale_color_manual(values=c(viridis(3)[1], viridis(3)[3], viridis(3)[2],viridis(3)[2],viridis(3)[2],"gray")) +
   scale_linetype_manual(values=c(1,1,1,2,3,1)) +
   xlab('Rubber expansion (Mha)') + ylab('No. of affected species') +
   theme(legend.position="none") +
@@ -150,7 +151,7 @@ scenfig_cumsuit <- ggplot(data=scen_df_plot, aes(x=lost_area, y=cumsuit,  group=
   geom_rect(data=rect1, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) +
   geom_rect(data=rect2, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) +
   geom_line() +
-  scale_color_manual(values=c("blue", "red", "purple", "purple", "purple", "gray")) +
+  scale_color_manual(values=c(viridis(3)[1], viridis(3)[3], viridis(3)[2],viridis(3)[2],viridis(3)[2],"gray")) +
   scale_linetype_manual(values=c(1,1,1,2,3,1)) +
   xlab('Rubber expansion (Mha)') + ylab('Average suitability of converted cells    ') +
   theme(legend.position="none") +
@@ -162,7 +163,7 @@ scenfig <- ggplot(data=scen_df_plot, aes(x=lost_area, y=rangeloss_sum,  group=sc
   geom_rect(data=rect1, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) +
   geom_rect(data=rect2, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) +  
   geom_line() +
-  scale_color_manual(values=c("blue", "red", "purple", "purple", "purple", "gray")) +
+  scale_color_manual(values=c(viridis(3)[1], viridis(3)[3], viridis(3)[2],viridis(3)[2],viridis(3)[2],"gray")) +
   scale_linetype_manual(values=c(1,1,1,2,3,1)) +
   xlab('Rubber expansion (Mha)') + ylab('Cumulative forested range loss (Mha)  ') +
   theme(legend.position="none") +
@@ -175,7 +176,7 @@ scenfig_affspp <- ggplot(data=scen_df_plot, aes(x=lost_area, y=nspplostrange0.10
   geom_rect(data=rect1, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) +
   geom_rect(data=rect2, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) + 
   geom_line() +
-  scale_color_manual(values=c("blue", "red", "purple", "purple", "purple", "gray")) +
+  scale_color_manual(values=c(viridis(3)[1], viridis(3)[3], viridis(3)[2],viridis(3)[2],viridis(3)[2],"gray")) +
   scale_linetype_manual(values=c(1,1,1,2,3,1)) +
   xlab('Rubber expansion (Mha)') + ylab('No. of affected species') +
   theme(legend.position=c(0, 0.85), legend.title = element_blank(), legend.spacing=unit(0, 'mm'), legend.key.height = unit(0.1, 'cm'))+
@@ -186,7 +187,7 @@ scenfig_affspp <- ggplot(data=scen_df_plot, aes(x=lost_area, y=nspplostrange0.10
 #### comb fig (2x3) ####
 scenfig_comb <- plot_grid(scenfigC_cumsuit, scenfigC, scenfigC_affspp, scenfig_cumsuit, scenfig, scenfig_affspp,  ncol=3, labels = c('A', 'B', 'C', 'D', 'E', 'F'), label_size=8  )
 
-cowplot::save_plot("output/results/dataS1_fig3.png", scenfig_comb, base_width=6.85, base_height = 6.85/3*2, dpi=300)
+cowplot::save_plot("output/results/CBcolorblind/dataS1_fig3.png", scenfig_comb, base_width=6.85, base_height = 6.85/3*2, dpi=300)
 
 
 
@@ -214,9 +215,9 @@ sppnames_iucn %>% group_by(category) %>% summarize(n=n())
 
 ### + Load spprangeloss tbls from simulations & merge with sppnames/iucn categories ####
 dflist <- list.files('output/country_scenario', full.names=TRUE)
-dflist <- grep('spprangelosstbl_scen', dflist, value=TRUE)
+dflist <- grep('spprangelosstbl_', dflist, value=TRUE)
 dflist
-dflist <- lapply(dflist, fread)
+dflist <- lapply(dflist[c(1,6:9)], fread)
 
 spprangeloss_dfC <- rbindlist(dflist)
 
@@ -254,7 +255,7 @@ head(spprangeloss_dfC)
 
 
 ###### + Fig4 Histogram for paper ####
-unique(spprangeloss_df$scenario)
+unique(spprangeloss_dfC$scenario)
 
 hist_spprangeloss_df_0_highC <- spprangeloss_dfC %>% filter(percent_rangeloss_high>=10)  %>% 
   mutate(rangeloss.class = cut(percent_rangeloss_high, breaks=seq(10,105,5),include.lowest = TRUE, right = FALSE, labels=c(seq(10.1,100.1,5)) ) , orirange.class=cut(ori_range, breaks=c(0,10,100,1000,10000,100000), labels=c("0-0.1 Mha", "0.1-1 Mha", "1-10 Mha", "10-100 Mha", "100-1000 Mha")) ) %>% filter(scenario %in% c("1-Production", "3a-Compromise Biodiversity"))
@@ -270,9 +271,10 @@ str(hist_spprangeloss_df_0_highC$scenario)
 as.integer(as.factor(hist_spprangeloss_df_0_highC$scenario))
 
 hist_rangeloss_scen_high <- ggplot(hist_spprangeloss_df_0_highC,aes(rangeloss.class, fill=iucn_category)) + 
-  geom_rect(data=rect4, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) +
+  geom_rect(data=rect4, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.2, inherit.aes = FALSE) +
   geom_histogram(binwidth=5, boundary=0) + 
   facet_wrap(scenario ~., ncol=1) +
+  scale_fill_viridis(discrete=TRUE, option="E") +
   scale_x_continuous(breaks=seq(10,100,10))  +
   theme(legend.position = c(0.45, 0.85), legend.direction='vertical', 
         legend.title=element_text(size=9, face="bold"), legend.text=element_text(size=9), 
@@ -283,9 +285,10 @@ hist_rangeloss_scen_high <- ggplot(hist_spprangeloss_df_0_highC,aes(rangeloss.cl
 
 
 hist_rangeloss_scen_tax_high <- ggplot(hist_spprangeloss_df_0_highC,aes(rangeloss.class, fill=class)) + 
-  geom_rect(data=rect4, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) +
+  geom_rect(data=rect4, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.2, inherit.aes = FALSE) +
   geom_histogram(binwidth=5, boundary=0) + 
   facet_wrap(scenario ~., ncol=1) +
+  scale_fill_viridis(discrete=TRUE, option="E") +
   scale_x_continuous(breaks=seq(10, 100, 10))  +
   theme(legend.position = c(0.45, 0.88),         
         legend.title=element_text(size=9, face="bold"), legend.text=element_text(size=9),  
@@ -296,9 +299,10 @@ hist_rangeloss_scen_tax_high <- ggplot(hist_spprangeloss_df_0_highC,aes(rangelos
 
 hist_rangeloss_scen_range_high <- 
   ggplot(hist_spprangeloss_df_0_highC,  aes(rangeloss.class, fill=orirange.class)) + 
-  geom_rect(data=rect4, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.3, inherit.aes = FALSE) +
+  geom_rect(data=rect4, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.2, inherit.aes = FALSE) +
   geom_histogram(binwidth=5, boundary=0) + 
   facet_wrap(scenario ~., ncol=1) +
+  scale_fill_viridis(discrete=TRUE, option="E") +
   scale_x_continuous(breaks=seq(10, 100, 10))  +
   theme(legend.position = c(0.45, 0.86),
         legend.title=element_text(size=9, face="bold"), legend.text=element_text(size=9), 
@@ -313,7 +317,7 @@ scen_histC <- plot_grid( hist_rangeloss_scen_high, hist_rangeloss_scen_tax_high,
 ### plot labels 
 scen_histC_labs <- scen_histC + draw_plot_label(c("A", "B", "C", "D", "E","F"), x=rep(c(0.03,0.34,0.67),2), y=rep(c(1,0.55),each=3), fontface="bold", size=10)
 
-cowplot::save_plot("output/results/dataS1_fig4.png", scen_histC_labs, base_width=6.85, base_height = 4, dpi=300)
+cowplot::save_plot("output/results/CBcolorblind/dataS1_fig4.png", scen_histC_labs, base_width=6.85, base_height = 4, dpi=300)
 
 
 

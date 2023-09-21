@@ -10,6 +10,9 @@ library(raster)
 library(R.utils)
 library(ncdf4)
 library(sf)
+library(ggplot2)
+library(viridis)
+library(cowplot) 
 
 # Set folder containing GIS input files
 GISfolder <- 'C:/Users/bop17mw/Desktop/GIS_Files/'
@@ -324,6 +327,8 @@ freq(dry.cold.stress.afr)
 plot(dry.cold.stress.afr)
 writeRaster(dry.cold.stress.afr, 'output/afr/various_rasters/extendedsuit_afr_0-6.tif',  overwrite=TRUE)
 
+#### Africa ####
+dry.cold.stress.afr <- raster('output/afr/various_rasters/extendedsuit_afr_0-6.tif')
 
 ### Mask landuse from suit ext ####
 dry.cold.stress.afr_mask <- mask(dry.cold.stress.afr, mat_land_use, maskvalue=NA, updatevalue=NA)
@@ -337,6 +342,8 @@ dry.cold.stress.afr.bin <- calc(dry.cold.stress.afr, fun=function(r){ifelse(r>0,
 
 dry.cold.stress.afr.bin_mask <- mask(dry.cold.stress.afr.bin, mat_land_use, maskvalue=NA, updatevalue=NA)
 dry.cold.stress.afr.bin_mask <- mask(dry.cold.stress.afr.bin_mask, mat_land_use, maskvalue=0, updatevalue=0)
+
+writeRaster(dry.cold.stress.afr.bin_mask, 'output/afr/various_rasters/extendedsuit_afr_bin_mask.tif')
 
 
 # Compare layers (use masked map)
@@ -437,8 +444,8 @@ range(check0.ssea$suit) #0-0.04
 
 
 #### FIGURE FOR PAPER #####
-#dry.cold.stress.afr <- raster('output/afr/various_rasters/extendedsuit_afr_0-6.tif',  overwrite=TRUE)
-#dry.cold.stress.ssea <- raster('output/ssea/various_rasters/extendedsuit_ssea_0-6.tif',  overwrite=TRUE)
+dry.cold.stress.afr <- raster('output/afr/various_rasters/extendedsuit_afr_0-6.tif')
+dry.cold.stress.ssea <- raster('output/ssea/various_rasters/extendedsuit_ssea_0-6.tif')
 
 library(sf)
 
@@ -465,7 +472,8 @@ res_df$zone <- as.character(res_df$zone)
 
 gg_suit_ext_afr <- ggplot() +
   geom_tile(data=res_df, aes(y=y, x=x, fill=zone)) +
-  scale_fill_manual(values=c("gray90", "lightgoldenrod", "yellow",  "darkolivegreen1", "palegreen4", "darkgreen" )) +
+  #scale_fill_manual(values=c("gray90", "lightgoldenrod", "yellow",  "darkolivegreen1", "palegreen4", "darkgreen" )) +
+  scale_fill_viridis(discrete=TRUE, option="rocket", direction=-1) +
   geom_sf(data = afr_countries_wgs, fill=NA, lwd=0.25) +
   coord_sf(datum = NA)  +
   theme(
@@ -483,10 +491,13 @@ res_spdf <- rasterToPoints(map_latlon)
 res_df2 <- as.data.frame(res_spdf)
 colnames(res_df2)[3] <- 'suitability'
 
+?scale_fill_viridis
+
 gg_suit_afr <- ggplot() +
   geom_tile(data=res_df2, aes(y=y, x=x, fill=suitability)) +
   #scale_fill_gradientn(colors=rev(terrain.colors(255)), breaks=seq(0,1,by=0.5), labels=c(0,0.5,1), limits=c(0,1)) +
-  scale_fill_gradientn(colors=rev(terrain.colors(255)), breaks=seq(0,1,by=0.2), limits=c(0,1)) +
+  #scale_fill_gradientn(colors=rev(terrain.colors(255)), breaks=seq(0,1,by=0.2), limits=c(0,1)) +
+  scale_fill_viridis(breaks=seq(0,1,by=0.2), limits=c(0,1), direction=-1) +
   geom_sf(data = afr_countries_wgs, fill=NA, lwd=0.25) +
   coord_sf(datum = NA)  +
   theme(
@@ -509,7 +520,7 @@ res_df3$zone <- as.character(res_df3$zone)
 gg_suit_ext_ssea <- ggplot() +
   geom_tile(data=res_df3, aes(y=y, x=x, fill=zone)) +
   #scale_fill_gradientn(colours=c("gray90","lightblue","yellow","orangered","green")) +
-  scale_fill_manual(values=c("gray90", "lightgoldenrod", "yellow",  "darkolivegreen1", "palegreen4", "darkgreen" )) +
+  scale_fill_viridis(discrete=TRUE, option="rocket", direction=-1) +
   geom_sf(data = ssea_countries_wgs, fill=NA, lwd=0.25) +
   coord_sf(datum = NA)  +
   theme(
@@ -527,7 +538,7 @@ colnames(res_df4)[3] <- 'suitability'
 
 gg_suit_ssea <- ggplot() +
   geom_tile(data=res_df4, aes(y=y, x=x, fill=suitability)) +
-  scale_fill_gradientn(colors=rev(terrain.colors(255)), breaks=seq(0,1,by=0.2), limits=c(0,1)) +
+  scale_fill_viridis(breaks=seq(0,1,by=0.2), limits=c(0,1), direction=-1) +
   geom_sf(data = ssea_countries_wgs, fill=NA, lwd=0.25) +
   coord_sf(datum = NA)  +
   theme(
@@ -541,8 +552,10 @@ gg_suit_ssea <- ggplot() +
 
 
 #### Fig S2 Combined 2x2 plot ####
- 
+
+
 fig_suit_ext_compare <- plot_grid(gg_suit_ext_afr, gg_suit_ext_ssea, gg_suit_afr, gg_suit_ssea, 
                            labels = c('A', 'B', 'C', 'D'), ncol=2, label_size=8) 
 
-cowplot::save_plot("output/results/figS2.png", fig_suit_ext_compare, base_height=4, base_width=6.85) #
+cowplot::save_plot("output/results/CBcolorblind/figS2.png", fig_suit_ext_compare, base_height=4, base_width=6.85) #
+??plot_grid

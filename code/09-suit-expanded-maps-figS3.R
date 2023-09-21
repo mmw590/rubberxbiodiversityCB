@@ -12,9 +12,8 @@ library(dplyr)
 library(sf)
 library(raster)
 library(ggplot2)
-#library(ggthemes)
 library(cowplot)
-library(magick)
+#library(magick)
 
 
 #### Col.matrix fxn 
@@ -42,6 +41,7 @@ colmat.fixed <- function(nclasses=10, upperleft=rgb(0,150,235, maxColorValue=255
   col.matrix <- col.matrix[c(seqs), c(seqs)] } 
 
 col.matrix <- colmat.fixed(nclasses=5, upperleft="blue3", upperright="red", bottomleft="lightblue", xlab="Cumulative Vulnerability", ylab="Rubber Suitability") #bottom left default grey, bottom right default yellow
+
 
 
 

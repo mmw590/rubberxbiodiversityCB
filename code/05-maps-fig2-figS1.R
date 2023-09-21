@@ -1,7 +1,6 @@
 #### rubberxbiodiversityCB 
 #### 05-maps-fig2-figS1.R #### 
 
-
 #### For generalised version of bivariate chloropleth map (limited to equal number of interval classes along y and axis), follow link below:  
 #http://rfunctions.blogspot.com/2015/03/bivariate-maps-bivariatemap-function.html
 
@@ -13,14 +12,15 @@ library(sf)
 library(raster)
 library(ggplot2)
 library(cowplot)
-library(magick)
+#library(magick)
 library(scales) #for hue 
 
 
 ############### 4 x 5 Color Matrix Bivariate Chloropleth Map ######################
 
 #### Col.matrix fxn  (MANUAL)
-colmat.manual <- function(nclass.y=5, nclass.x=5, upperleft="blue3", upperright="red", bottomleft="grey", bottomright="#FFE60F"){
+#colmat.manual <- function(nclass.y=5, nclass.x=5, upperleft="blue3", upperright="red", bottomleft="grey", bottomright="#FFE60F"){
+colmat.manual <- function(nclass.y=5, nclass.x=5, upperleft=rgb(0,150,235, maxColorValue=255), upperright=rgb(130,0,80, maxColorValue=255), bottomleft="grey", bottomright=rgb(255,230,15, maxColorValue=255)){
   for (i in 1:nclass.y){
     rowcolorlist[[i]] <- colorRampPalette( c(colorRampPalette(c(upperleft, bottomleft))(nclass.y)[i], 
                                              colorRampPalette(c(upperright,bottomright))(nclass.y)[i]) )(nclass.x) 
@@ -35,6 +35,7 @@ colmat.manual <- function(nclass.y=5, nclass.x=5, upperleft="blue3", upperright=
 }
 
 rowcolorlist <- list()
+col.matrix2 <- colmat.manual(nclass.y=4, upperleft="blue3", upperright="red", bottomleft="lightblue") #pal1 = Fig S3
 col.matrix2 <- colmat.manual(nclass.y=4)
 
 zz <- expand.grid( vuln=seq(0.2,1,0.2), suit=c(1,0.8,0.6,0.4)) #upperlimits of the interval classes
@@ -526,7 +527,8 @@ names(ggfigvulnT_ssea)
 ############## MAKE COMBINED PLOTS FOR PAPER ###################
 
 # + Manually calculating the dimensions of the figure ####
-mat_vuln_ssea <- raster('output/ssea/biodiversity_rasters/rescaled_twice_ssea_combspp_vuln_threat_std_mask.tif')
+mat_vuln_ssea <- raster('output/ssea/biodiversity_rasters/rescaled_twice_ssea_combspp_vuln_threat_std_mask_ext.tif')
+
 mat_vuln_afr <- raster('output/afr/biodiversity_rasters/rescaled_twice_afr_combspp_vuln_threat_std_mask.tif')
 
 dim(mat_vuln_ssea) # 582 (ht) x 1026 (wd)
@@ -657,10 +659,12 @@ gg_bivcol_legend_vuln_taxa <- gg_bivcol_legend_vuln +  theme_cowplot(font_size=1
 gg_topbottom2 <- plot_grid(top_afr, bottom_ssea, ncol = 1, label_size=8, align="v") +
   draw_plot(gg_bivcol_legend_vuln_taxa, x=0.0, y=0.68, width=0.29, height=0.24) 
 
-cowplot::save_plot("output/results/fig2.tiff", gg_topbottom2, base_height = overall_height+0.05, base_width=6.85, dpi=300) 
+cowplot::save_plot("output/results/CBcolorblind/fig2_pal2.tiff", gg_topbottom2, base_height = overall_height+0.05, base_width=6.85, dpi=300) 
 
-cowplot::save_plot("output/results/fig2_highres.png", gg_topbottom2, base_height = overall_height+0.05, base_width=6.85, dpi=1000) #super high res version
+cowplot::save_plot("output/results/CBcolorblind/fig2_highres_pal2.png", gg_topbottom2, base_height = overall_height+0.05, base_width=6.85, dpi=1000) #super high res version
 
+
+cowplot::save_plot("output/results/CBcolorblind/fig2_300res_pal2.png", gg_topbottom2, base_height = overall_height+0.05, base_width=6.85, dpi=300)
 
 
 
@@ -692,7 +696,7 @@ gg_bivcol_legend_vuln_taxa <- gg_bivcol_legend_vuln +  theme_cowplot(font_size=1
 gg_topbottom2 <- plot_grid(top_afr, bottom_ssea, ncol = 1, label_size=8, align="v") +
   draw_plot(gg_bivcol_legend_vuln_taxa, x=0.0, y=0.68, width=0.29, height=0.24) 
 
-cowplot::save_plot("output/results/dataS1_fig2.png", gg_topbottom2, base_height = overall_height+0.05, base_width=6.85) 
+cowplot::save_plot("output/results/CBcolorblind/dataS1_fig2_pal2.png", gg_topbottom2, base_height = overall_height+0.05, base_width=6.85, dpi=300) 
 
 
 
@@ -888,13 +892,13 @@ system.time(
 gg_aoc_aor_conc <- plot_grid(ggfiglist_afr_aoc[[3]] , ggfiglist_ssea_aoc[[3]] , labels = c('A', 'B'), nrow=2, ncol = 1, label_size=8, align="v", axis="r", rel_heights = c(rel_h_afr, rel_h_ssea), rel_widths = c(rel_w_afr, rel_w_ssea)) + #
   draw_plot(gg_aoc_legend_vuln, x=0, y=0.5, width=0.38, height=0.33) 
 
-system.time(cowplot::save_plot("output/results/figS1.png", gg_aoc_aor_conc, base_width=6.85, base_height = 6.85*(rel_h_afr+rel_h_ssea), dpi=300)) # 19s
+system.time(cowplot::save_plot("output/results/CBcolorblind/figS1_pal2.png", gg_aoc_aor_conc, base_width=6.85, base_height = 6.85*(rel_h_afr+rel_h_ssea), dpi=300)) # 19s
 
 
 gg_aoc_aor_conc_vulnA <- plot_grid(ggfiglist_afr_aoc[[2]] , ggfiglist_ssea_aoc[[2]] , labels = c('A', 'B'), nrow=2, ncol = 1, label_size=8, align="v", axis="r", rel_heights = c(rel_h_afr, rel_h_ssea), rel_widths = c(rel_w_afr, rel_w_ssea)) + #
   draw_plot(gg_aoc_legend_vuln, x=0, y=0.5, width=0.38, height=0.33) 
 
-system.time(cowplot::save_plot("output/results/dataS1_results_reference_aoc_aor_conc.png", gg_aoc_aor_conc_vulnA, base_width=6.85, base_height = 6.85*(rel_h_afr+rel_h_ssea), dpi=300)) # 19s
+system.time(cowplot::save_plot("output/results/CBcolorblind/dataS1_results_reference_aoc_aor_conc_pal2.png", gg_aoc_aor_conc_vulnA, base_width=6.85, base_height = 6.85*(rel_h_afr+rel_h_ssea), dpi=300)) # 19s
 
 
 
@@ -933,7 +937,7 @@ gg_scen3 <- gg_bivcol_legend_vuln +
 gg_scen_supp <- plot_grid(gg_scen1, gg_scen2, gg_scen3, labels=c('A', ' B', 'C'), label_size=8,  
                           align = 'h', nrow=1, ncol=3, rel_widths = c(1, 1, 1))  
 
-ggsave('./output/results/figS4.png', plot=gg_scen_supp, height=174/3, width=174, units='mm', dpi=300) 
+ggsave('./output/results/CBcolorblind/figS4_pal2.png', plot=gg_scen_supp, height=174/3, width=174, units='mm', dpi=300) 
 #cowplot::save_plot("output/results/figs4.png", gg_scen_supp, base_width=3.35, base_height=3.35/3, dpi=300) #using cowplot
 
 
